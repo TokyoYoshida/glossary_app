@@ -3,6 +3,15 @@ import 'package:provider/provider.dart';
 
 import 'Domain.dart';
 
+class CounterStore with ChangeNotifier {
+  var count = 0;
+
+  void incrementCounter() {
+    count++;
+    notifyListeners();
+  }
+}
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {

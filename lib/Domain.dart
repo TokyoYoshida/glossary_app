@@ -1,12 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CounterStore with ChangeNotifier {
-  var count = 0;
+abstract class DomainModel {
 
-  void incrementCounter() {
-    count++;
-    notifyListeners();
+}
+
+class GlossaryRepository {
+  add() {
+
+  }
+
+  delete() {
+
+  }
+
+  update() {
+
+  }
+
+  find() {
+
   }
 }
 
+abstract class Entity {
+
+}
+
+class Word extends Entity{
+  String theWord;
+  String description;
+}
