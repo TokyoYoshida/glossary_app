@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CounterStore with ChangeNotifier {
-  var count = 0;
+import 'Domain.dart';
 
-  void incrementCounter() {
-    count++;
-    notifyListeners();
-  }
-}
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
