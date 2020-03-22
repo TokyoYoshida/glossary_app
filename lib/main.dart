@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'Domain.dart';
+import 'domain/Domain.dart';
 
 class CounterStore with ChangeNotifier {
   var count = 0;
