@@ -17,11 +17,55 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: ChangeNotifierProvider(
-        create: (context) => CounterStore(),
-        child: MyHomePage(),
-      ),
+    return MaterialApp(home: MyTop(), routes: <String, WidgetBuilder>{
+      '/home': (BuildContext context) => new MyCenter()
+    });
+  }
+}
+
+class MyTop extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('サンプル'),
+        ),
+        body: Center(
+          child: Column(
+            children: <Widget>[
+              RaisedButton(
+                child: Text('ライセンスページの表示'),
+                onPressed: () => showLicensePage(
+                  context: context,
+                  applicationName: 'Sample',
+                  applicationVersion: '1.0.0',
+                ),
+              ),
+              RaisedButton(
+                  child: Text('起動'),
+                  onPressed: () => Navigator.of(context).pushNamed('/home')),
+              RaisedButton(
+                  child: Text('webブラウザ'),
+                  onPressed: () => Navigator.of(context).pushNamed('/web')),
+              RaisedButton(
+                  child: Text('Get Battery Level'),
+                  onPressed: () => Navigator.of(context).pushNamed('/battery')),
+              Text("test"),
+            ],
+          ),
+        ));
+  }
+}
+
+class MyCenter extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        body: ChangeNotifierProvider(
+            create: (context) => CounterStore(), child: MyHomePage()
+        )
     );
   }
 }
