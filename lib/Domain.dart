@@ -6,28 +6,23 @@ abstract class DomainModel {
 }
 
 class GlossaryRepository {
-  add() {
-
+  find(String id) {
   }
 
-  delete() {
-
-  }
-
-  update() {
-
-  }
-
-  find() {
-
+  List loadAll() {
   }
 }
 
 abstract class Entity {
-
+  String id;
 }
 
-class Word extends Entity{
+class Word extends Entity {
   String theWord;
   String description;
+  User updateUser;
+}
+
+class User extends Entity{
+  String nickName;
 }
