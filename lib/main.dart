@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'domain/domain.dart';
+import 'infrastructure/auth.dart';
 
 class CounterStore with ChangeNotifier {
   var count = 0;
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(home: MyTop(), routes: <String, WidgetBuilder>{
-      '/home': (BuildContext context) => new MyCenter()
+      '/home': (BuildContext context) => new MyCenter(),
+      '/test': (BuildContext context) => new MyAuthTest()
     });
   }
 }
@@ -46,8 +48,8 @@ class MyTop extends StatelessWidget {
                   child: Text('起動'),
                   onPressed: () => Navigator.of(context).pushNamed('/home')),
               RaisedButton(
-                  child: Text('webブラウザ'),
-                  onPressed: () => Navigator.of(context).pushNamed('/web')),
+                  child: Text('認証'),
+                  onPressed: () => Navigator.of(context).pushNamed('/test')),
               RaisedButton(
                   child: Text('Get Battery Level'),
                   onPressed: () => Navigator.of(context).pushNamed('/battery')),
@@ -57,6 +59,17 @@ class MyTop extends StatelessWidget {
         ));
   }
 }
+
+class MyAuthTest extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        body: Text(AuthenticationService.test())
+    );
+  }
+}
+
 
 class MyCenter extends StatelessWidget {
   // This widget is the root of your application.
