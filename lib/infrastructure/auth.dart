@@ -9,14 +9,15 @@ class AuthenticationService {
     .then((result) {
       print("success!");
     });
-    return "test";
+    print("authtest");
+    return "test1";
   }
 
   static Future<String> auth() async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
     final userAttributes = [
-      new AttributeArg(name: 'first_name', value: 'Jimmy'),
-      new AttributeArg(name: 'last_name', value: 'Wong'),
+      new AttributeArg(name: 'name', value: 'Jimmy'),
+      new AttributeArg(name: 'email', value: testUserEmail),
     ];
 
     var data;
