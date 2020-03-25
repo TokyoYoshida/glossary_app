@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import '../infrastructure/cognito_service.dart';
+import 'dart:async';
 
 const users = const {
   'dribbble@gmail.com': '12345',
@@ -25,12 +27,8 @@ class LoginScreen extends StatelessWidget {
   Future<String> _signupUser(LoginData data) {
     print('Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(data.name)) {
-        return 'Username not exists';
-      }
-      if (users[data.name] != data.password) {
-        return 'Password does not match';
-      }
+      CognitoService.auth(data.name, data.name, data.password);
+
       return null;
     });
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'domain/domain.dart';
-import 'infrastructure/auth.dart';
+import 'infrastructure/cognito_service.dart';
 import 'view/auth_view.dart';
 
 class CounterStore with ChangeNotifier {
@@ -70,7 +70,7 @@ class MyAuthTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        body: Text(AuthenticationService.test())
+        body: Text(CognitoService.test())
     );
   }
 }

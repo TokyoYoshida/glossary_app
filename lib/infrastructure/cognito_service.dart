@@ -3,9 +3,9 @@ import 'dart:async';
 
 import '../config/config.dart';
 
-class AuthenticationService {
+class CognitoService {
   static String test() {
-    AuthenticationService.auth()
+    CognitoService.auth(testUserEmail,testUserEmail,testUserPassword)
     .then((result) {
       print("success!");
     });
@@ -13,16 +13,16 @@ class AuthenticationService {
     return "test1";
   }
 
-  static Future<String> auth() async {
+  static Future<String> auth(String name, String email, String password) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
     final userAttributes = [
-      new AttributeArg(name: 'name', value: 'Jimmy'),
-      new AttributeArg(name: 'email', value: testUserEmail),
+      new AttributeArg(name: 'name', value: name),
+      new AttributeArg(name: 'email', value: email),
     ];
 
     var data;
     try {
-      data = await userPool.signUp(testUserEmail, testUserPassword,
+      data = await userPool.signUp(email, password,
           userAttributes: userAttributes);
       print("authtest success signup");
     } catch (e) {
