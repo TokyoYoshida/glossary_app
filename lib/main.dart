@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'domain/domain.dart';
 import 'infrastructure/auth.dart';
+import 'view/auth_view.dart';
 
 class CounterStore with ChangeNotifier {
   var count = 0;
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(home: MyTop(), routes: <String, WidgetBuilder>{
       '/home': (BuildContext context) => new MyCenter(),
-      '/test': (BuildContext context) => new MyAuthTest()
+      '/test': (BuildContext context) => new MyAuthTest(),
+      '/login': (BuildContext context) => new LoginScreen()
     });
   }
 }
@@ -50,6 +52,9 @@ class MyTop extends StatelessWidget {
               RaisedButton(
                   child: Text('認証'),
                   onPressed: () => Navigator.of(context).pushNamed('/test')),
+              RaisedButton(
+                  child: Text('Login'),
+                  onPressed: () => Navigator.of(context).pushNamed('/login')),
               RaisedButton(
                   child: Text('Get Battery Level'),
                   onPressed: () => Navigator.of(context).pushNamed('/battery')),

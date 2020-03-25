@@ -28,6 +28,8 @@ dependencies:
 
   amazon_cognito_identity_dart: ^0.0.22
 
+  flutter_login: ^1.0.14
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
