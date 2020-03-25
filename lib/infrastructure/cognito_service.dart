@@ -21,14 +21,11 @@ class CognitoService {
     ];
 
     var data;
-    try {
-      data = await userPool.signUp(email, password,
-          userAttributes: userAttributes);
-      print("authtest success signup");
-    } catch (e) {
-      print(e);
-      print("authtest error!" + e.toString());
-    }
+    data = await userPool.signUp(email, password,
+        userAttributes: userAttributes);
+
+    print("authtest success signup");
+
     return "success";
   }
 }

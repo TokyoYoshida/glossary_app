@@ -27,7 +27,12 @@ class LoginScreen extends StatelessWidget {
   Future<String> _signupUser(LoginData data) {
     print('Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) {
-      CognitoService.auth(data.name, data.name, data.password);
+      CognitoService.auth(data.name, data.name, data.password)
+          .then((result) {
+        print("success!");
+      }).catchError((error) {
+        print("authviewerror!" + error.toString());
+      });
 
       return null;
     });
