@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:flutter_login/flutter_login.dart';
 import '../infrastructure/cognito_service.dart';
 import 'dart:async';
@@ -7,6 +9,28 @@ const users = const {
   'dribbble@gmail.com': '12345',
   'hunter@gmail.com': 'hunter',
 };
+
+class CounterStore with ChangeNotifier {
+  var count = 0;
+
+  void incrementCounter() {
+    count++;
+    notifyListeners();
+  }
+}
+
+class LoginTopScreen extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        body: ChangeNotifierProvider(
+            create: (context) => CounterStore(), child: LoginScreen()
+        )
+    );
+  }
+}
+
 
 class LoginScreen extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
@@ -57,18 +81,21 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlutterLogin(
-      title: 'ECORP',
-      logo: 'assets/images/ecorp-lightblue.png',
-      onLogin: _authUser,
-      onSignup: _signupUser,
-      onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => new MyAuthTest(),
-        ));
-      },
-      onRecoverPassword: _recoverPassword,
-    );
+    return Consumer<CounterStore>(
+        builder: (context, counterStore, _) {
+      return FlutterLogin(
+        title: 'ECORP',
+        logo: 'assets/images/ecorp-lightblue.png',
+        onLogin: _authUser,
+        onSignup: _signupUser,
+        onSubmitAnimationCompleted: () {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => new MyAuthTest(),
+          ));
+        },
+        onRecoverPassword: _recoverPassword,
+      );
+    });
   }
 }
 
@@ -77,7 +104,17 @@ class MyAuthTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        body: Text("test")
+        body: Text("login")
+    );
+  }
+}
+
+class MySignup extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        body: Text("signuptest")
     );
   }
 }

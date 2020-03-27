@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(home: MyTop(), routes: <String, WidgetBuilder>{
       '/home': (BuildContext context) => new MyCenter(),
       '/test': (BuildContext context) => new MyAuthTest(),
-      '/login': (BuildContext context) => new LoginScreen()
+      '/login': (BuildContext context) => new LoginTopScreen()
     });
   }
 }
