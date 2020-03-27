@@ -34,6 +34,7 @@ class LoginTopScreen extends StatelessWidget {
 
 class LoginScreen extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
+  var authMode = 0;
 
   Future<String> _authUser(LoginData data) {
     print('Name: ${data.name}, Password: ${data.password}');
@@ -44,6 +45,7 @@ class LoginScreen extends StatelessWidget {
       if (users[data.name] != data.password) {
         return 'Password does not match';
       }
+      authMode = 1;
       return null;
     });
   }
@@ -53,7 +55,8 @@ class LoginScreen extends StatelessWidget {
     return CognitoService.auth(data.name, data.name, data.password)
           .then((result) {
         print("success!");
-        return "success";
+        authMode = 2;
+        return null;
       }).catchError((error) {
         print("authviewerror!" + error.toString());
         return extractErrorMessage(error.toString());
@@ -89,9 +92,11 @@ class LoginScreen extends StatelessWidget {
         onLogin: _authUser,
         onSignup: _signupUser,
         onSubmitAnimationCompleted: () {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => new MyAuthTest(),
-          ));
+          if (authMode == 1) {
+            Navigator.of(context).pushNamed('/afterlogin');
+          } else {
+            Navigator.of(context).pushNamed('/aftersingup');
+          }
         },
         onRecoverPassword: _recoverPassword,
       );
@@ -114,7 +119,7 @@ class MySignup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        body: Text("signuptest")
+        body: Text("signuptestsignuptestsignuptestsignuptestsignuptest")
     );
   }
 }
