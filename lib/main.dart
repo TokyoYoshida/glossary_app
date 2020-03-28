@@ -4,6 +4,10 @@ import 'package:provider/provider.dart';
 import 'domain/domain.dart';
 import 'infrastructure/cognito_service.dart';
 import 'view/auth_view.dart';
+import 'test.dart';
+
+import 'di/app_injector.dart';
+import 'package:inject/inject.dart';
 
 class CounterStore with ChangeNotifier {
   var count = 0;
@@ -14,12 +18,21 @@ class CounterStore with ChangeNotifier {
   }
 }
 
-void main() => runApp(MyApp());
 
+void main() async {
+  final container = await AppInjector.create();
+  runApp(container.app);
+}
+
+@provide
 class MyApp extends StatelessWidget {
+  MyTop mytop;
+
+  MyApp(this.mytop) : super();
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: MyTop(), routes: <String, WidgetBuilder>{
+    return MaterialApp(home: mytop, routes: <String, WidgetBuilder>{
       '/home': (BuildContext context) => new MyCenter(),
       '/test': (BuildContext context) => new MySignup(),
       '/login': (BuildContext context) => new LoginTopScreen(),
@@ -29,7 +42,10 @@ class MyApp extends StatelessWidget {
   }
 }
 
+@provide
 class MyTop extends StatelessWidget {
+  Employee employee;
+  MyTop(this.employee) : super();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -58,7 +74,7 @@ class MyTop extends StatelessWidget {
                   child: Text('Login'),
                   onPressed: () => Navigator.of(context).pushNamed('/login')),
               RaisedButton(
-                  child: Text('Get Battery Level'),
+                  child: Text(employee.test()),
                   onPressed: () => Navigator.of(context).pushNamed('/battery')),
               Text("test"),
             ],

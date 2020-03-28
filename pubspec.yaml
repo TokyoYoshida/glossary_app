@@ -43,6 +43,8 @@ dev_dependencies:
   inject_generator:
     path: ../inject.dart/package/inject_generator
 
+  build_resolvers: ^1.0.0
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
