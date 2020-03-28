@@ -1,0 +1,5 @@
+enum SignupResult {
+  Success,
+  Fail
+}
+
