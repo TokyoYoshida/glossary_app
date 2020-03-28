@@ -1,0 +1,59 @@
+{
+  "asset": "asset:glossaryapp/lib/main.dart",
+  "summary": {
+    "injector": [],
+    "module": [],
+    "injectable": [
+      {
+        "name": "MyApp",
+        "constructor": {
+          "name": "",
+          "kind": "constructor",
+          "injectedType": {
+            "lookupKey": {
+              "root": "asset:glossaryapp/lib/main.dart#MyApp",
+              "qualifier": null
+            },
+            "isProvider": false
+          },
+          "singleton": false,
+          "asynchronous": false,
+          "dependencies": [
+            {
+              "lookupKey": {
+                "root": "asset:glossaryapp/lib/main.dart#MyTop",
+                "qualifier": null
+              },
+              "isProvider": false
+            }
+          ]
+        }
+      },
+      {
+        "name": "MyTop",
+        "constructor": {
+          "name": "",
+          "kind": "constructor",
+          "injectedType": {
+            "lookupKey": {
+              "root": "asset:glossaryapp/lib/main.dart#MyTop",
+              "qualifier": null
+            },
+            "isProvider": false
+          },
+          "singleton": false,
+          "asynchronous": false,
+          "dependencies": [
+            {
+              "lookupKey": {
+                "root": "asset:glossaryapp/lib/test.dart#Employee",
+                "qualifier": null
+              },
+              "isProvider": false
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

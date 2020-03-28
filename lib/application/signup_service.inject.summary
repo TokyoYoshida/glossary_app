@@ -1,0 +1,8 @@
+{
+  "asset": "asset:glossaryapp/lib/application/signup_service.dart",
+  "summary": {
+    "injector": [],
+    "module": [],
+    "injectable": []
+  }
+}

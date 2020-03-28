@@ -1,0 +1,8 @@
+{
+  "asset": "asset:glossaryapp/lib/domain/domain.dart",
+  "summary": {
+    "injector": [],
+    "module": [],
+    "injectable": []
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "asset": "asset:glossaryapp/lib/di/app_injector.dart",
+  "summary": {
+    "injector": [
+      {
+        "name": "AppInjector",
+        "providers": [
+          {
+            "name": "app",
+            "kind": "getter",
+            "injectedType": {
+              "lookupKey": {
+                "root": "asset:glossaryapp/lib/main.dart#MyApp",
+                "qualifier": null
+              },
+              "isProvider": false
+            },
+            "singleton": false,
+            "asynchronous": false,
+            "dependencies": []
+          },
+          {
+            "name": "mytop",
+            "kind": "getter",
+            "injectedType": {
+              "lookupKey": {
+                "root": "asset:glossaryapp/lib/main.dart#MyTop",
+                "qualifier": null
+              },
+              "isProvider": false
+            },
+            "singleton": false,
+            "asynchronous": false,
+            "dependencies": []
+          },
+          {
+            "name": "employee",
+            "kind": "getter",
+            "injectedType": {
+              "lookupKey": {
+                "root": "asset:glossaryapp/lib/test.dart#Employee",
+                "qualifier": null
+              },
+              "isProvider": false
+            },
+            "singleton": false,
+            "asynchronous": false,
+            "dependencies": []
+          },
+          {
+            "name": "name",
+            "kind": "getter",
+            "injectedType": {
+              "lookupKey": {
+                "root": "asset:glossaryapp/lib/test.dart#Name",
+                "qualifier": null
+              },
+              "isProvider": false
+            },
+            "singleton": false,
+            "asynchronous": false,
+            "dependencies": []
+          }
+        ],
+        "modules": []
+      }
+    ],
+    "module": [],
+    "injectable": []
+  }
+}
