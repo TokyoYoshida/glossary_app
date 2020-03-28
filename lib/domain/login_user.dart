@@ -2,7 +2,7 @@ import '../infrastructure/cognito_service.dart';
 import '../global/result.dart';
 
 abstract class LoginUser {
-  Future<SignupResult> signup(String name, String email, String password) async;
+  Future<SignupResult> signup(String email, String password);
 }
 
 class LoginUserImpl extends LoginUser {
@@ -14,7 +14,7 @@ class LoginUserImpl extends LoginUser {
 
   LoginUserImpl._internal();
 
-  Future<SignupResult> signup(String name, String email, String password) async {
-    return await CognitoService.auth(name, email, password);
+  Future<SignupResult> signup(String email, String password) async {
+    return await CognitoService.auth(email, email, password);
   }
 }

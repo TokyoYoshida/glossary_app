@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:glossaryapp/application/signup_service.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_login/flutter_login.dart';
-import '../infrastructure/cognito_service.dart';
+import '../application/signup_service.dart';
 import 'dart:async';
 
 const users = const {
@@ -49,7 +50,7 @@ class LoginScreen extends StatelessWidget {
 
   Future<String> _signupUser(LoginData data) {
     print('Name: ${data.name}, Password: ${data.password}');
-    return CognitoService.auth(data.name, data.name, data.password)
+    return new SignupServiceImpl().signup(data.name, data.password)
         .then((result) {
       print("success!");
       authMode = 2;

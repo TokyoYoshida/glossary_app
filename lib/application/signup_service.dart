@@ -1,11 +1,11 @@
 import 'package:glossaryapp/domain/domain.dart';
-import 'package:glossaryapp/domain/user.dart';
+import 'package:glossaryapp/domain/login_user.dart';
 
 import '../infrastructure/cognito_service.dart';
 import '../global/result.dart';
 
 abstract class SignupService {
-  Future<SignupResult> signup(String name, String email, String password);
+  Future<SignupResult> signup(String email, String password);
 }
 
 class SignupServiceImpl extends SignupService {
@@ -17,7 +17,7 @@ class SignupServiceImpl extends SignupService {
 
   SignupServiceImpl._internal();
 
-  Future<SignupResult> signup(String name, String email, String password) async {
-    return
+  Future<SignupResult> signup(String email, String password) async {
+    return new LoginUserImpl().signup(email, password);
   }
 }
