@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(home: MyTop(), routes: <String, WidgetBuilder>{
       '/home': (BuildContext context) => new MyCenter(),
-      '/test': (BuildContext context) => new MyAuthTest(),
+      '/test': (BuildContext context) => new MySignup(),
       '/login': (BuildContext context) => new LoginTopScreen(),
       '/afterlogin': (BuildContext context) => new MyAuthTest(),
       '/aftersingup': (BuildContext context) => new MySignup()
@@ -52,7 +52,7 @@ class MyTop extends StatelessWidget {
                   child: Text('起動'),
                   onPressed: () => Navigator.of(context).pushNamed('/home')),
               RaisedButton(
-                  child: Text('認証'),
+                  child: Text('sinupテスト'),
                   onPressed: () => Navigator.of(context).pushNamed('/test')),
               RaisedButton(
                   child: Text('Login'),

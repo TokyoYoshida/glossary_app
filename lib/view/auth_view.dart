@@ -125,8 +125,9 @@ class MySignup extends StatelessWidget {
     return new Scaffold(
         body: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Center(
+            child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               TextFormField(
                 decoration: const InputDecoration(
@@ -154,6 +155,7 @@ class MySignup extends StatelessWidget {
               ),
             ],
           ),
+        )
         )
     );
   }
