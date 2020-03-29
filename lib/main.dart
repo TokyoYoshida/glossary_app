@@ -5,6 +5,12 @@ import 'domain/domain.dart';
 import 'infrastructure/cognito_service.dart';
 import 'view/auth_view.dart';
 
+import 'package:get_it/get_it.dart';
+import 'package:injectable/injectable.dart';
+import 'main.iconfig.dart';
+
+import 'test.dart';
+
 class CounterStore with ChangeNotifier {
   var count = 0;
 
@@ -14,12 +20,25 @@ class CounterStore with ChangeNotifier {
   }
 }
 
-void main() => runApp(MyApp());
+final getIt = GetIt.instance;
 
+@injectableInit
+void configure() => $initGetIt(getIt);
+
+void main() {
+  configure();
+  var myApp = getIt.get<MyApp>();
+  runApp(myApp);
+}
+
+@injectable
 class MyApp extends StatelessWidget {
+  MyTop my_top;
+
+  MyApp(this.my_top);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: MyTop(), routes: <String, WidgetBuilder>{
+    return MaterialApp(home: my_top, routes: <String, WidgetBuilder>{
       '/home': (BuildContext context) => new MyCenter(),
       '/test': (BuildContext context) => new MySignup(),
       '/login': (BuildContext context) => new LoginTopScreen(),
@@ -29,7 +48,10 @@ class MyApp extends StatelessWidget {
   }
 }
 
+@injectable
 class MyTop extends StatelessWidget {
+  ServiceB sb;
+  MyTop(this.sb);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -58,7 +80,7 @@ class MyTop extends StatelessWidget {
                   child: Text('Login'),
                   onPressed: () => Navigator.of(context).pushNamed('/login')),
               RaisedButton(
-                  child: Text('Get Battery Level'),
+                  child: Text(sb.test()),
                   onPressed: () => Navigator.of(context).pushNamed('/battery')),
               Text("test"),
             ],
