@@ -1,9 +1,11 @@
 import 'package:amazon_cognito_identity_dart/cognito.dart';
+import 'package:injectable/injectable.dart';
 import 'dart:async';
 
 import '../config/config.dart';
 import '../global/result.dart';
 
+@injectable
 class CognitoService {
   static String test() {
     CognitoService.auth(testUserEmail,testUserEmail,testUserPassword)

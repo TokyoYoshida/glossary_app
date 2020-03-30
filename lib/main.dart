@@ -34,14 +34,15 @@ void main() {
 @injectable
 class MyApp extends StatelessWidget {
   MyTop my_top;
+  LoginTopScreen loginTopScreen;
 
-  MyApp(this.my_top);
+  MyApp(this.my_top, this.loginTopScreen);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(home: my_top, routes: <String, WidgetBuilder>{
       '/home': (BuildContext context) => new MyCenter(),
       '/test': (BuildContext context) => new MySignup(),
-      '/login': (BuildContext context) => new LoginTopScreen(),
+      '/login': (BuildContext context) => loginTopScreen,
       '/afterlogin': (BuildContext context) => new MyAuthTest(),
       '/aftersingup': (BuildContext context) => new MySignup()
     });

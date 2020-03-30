@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glossaryapp/application/signup_service.dart';
+import 'package:injectable/injectable.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_login/flutter_login.dart';
@@ -20,17 +21,26 @@ class CounterStore with ChangeNotifier {
   }
 }
 
+@injectable
 class LoginTopScreen extends StatelessWidget {
+  LoginScreen loginScreen;
+
+  LoginTopScreen(this.loginScreen);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         body: ChangeNotifierProvider(
-            create: (context) => CounterStore(), child: LoginScreen()));
+            create: (context) => CounterStore(), child: loginScreen));
   }
 }
 
+@injectable
 class LoginScreen extends StatelessWidget {
+  SignupService signupService;
+
+  LoginScreen(this.signupService);
+
   Duration get loginTime => Duration(milliseconds: 2250);
   var authMode = 0;
 
@@ -50,7 +60,7 @@ class LoginScreen extends StatelessWidget {
 
   Future<String> _signupUser(LoginData data) {
     print('Name: ${data.name}, Password: ${data.password}');
-    return new SignupServiceImpl().signup(data.name, data.password)
+    return signupService.signup(data.name, data.password)
         .then((result) {
       print("success!");
       authMode = 2;
