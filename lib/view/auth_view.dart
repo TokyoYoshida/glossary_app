@@ -72,7 +72,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   String extractErrorMessage(String original) {
-    final exp = RegExp(r'message: (.*)');
+    final exp = RegExp(r'message: ([^}]*)');
     var list =
         exp?.allMatches(original).map((match) => match.group(1)).toList();
     if (list.length == 1) {
