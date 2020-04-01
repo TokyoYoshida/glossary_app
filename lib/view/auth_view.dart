@@ -151,9 +151,12 @@ class MySignup extends StatelessWidget {
                           if (value.isEmpty) {
                             return 'Please enter some code';
                           }
-                          if (signup_service.check_verification_code(value) != Result.Success) {
-                            return 'verification codeが間違っています。';
-                          }
+                          signup_service.check_verification_code(value)
+                              .then((result) {
+                            return null;
+                          }).catchError((error) {
+                            return error.toString();
+                          });
                           return null;
                         },
                       ),
