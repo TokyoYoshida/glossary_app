@@ -64,7 +64,7 @@ class LoginScreen extends StatelessWidget {
         .then((result) {
       print("success!");
       authMode = 2;
-      return "success";
+      return null;
     }).catchError((error) {
       print("authviewerror!" + error.toString());
       return extractErrorMessage(error.toString());
