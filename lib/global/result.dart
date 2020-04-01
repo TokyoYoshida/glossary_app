@@ -1,4 +1,4 @@
-enum SignupResult {
+enum Result {
   Success,
   Fail
 }

@@ -19,8 +19,13 @@ void $initGetIt(GetIt g, {String environment}) {
   g.registerFactory<MyTop>(() => MyTop(g<ServiceB>()));
   g.registerFactory<SignupService>(() => SignupServiceImpl(g<LoginUser>()));
   g.registerFactory<LoginScreen>(() => LoginScreen(g<SignupService>()));
+  g.registerFactory<MySignup>(() => MySignup(g<SignupService>()));
   g.registerFactory<LoginTopScreen>(() => LoginTopScreen(g<LoginScreen>()));
-  g.registerFactory<MyApp>(() => MyApp(g<MyTop>(), g<LoginTopScreen>()));
+  g.registerFactory<MyApp>(() => MyApp(
+        g<MyTop>(),
+        g<LoginTopScreen>(),
+        g<MySignup>(),
+      ));
 
   //Eager singletons must be registered in the right order
   g.registerSingleton<LoginUser>(LoginUserImpl());

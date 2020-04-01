@@ -16,7 +16,7 @@ class CognitoService {
     return "test1";
   }
 
-  static Future<SignupResult> auth(String name, String email, String password) async {
+  static Future<Result> auth(String name, String email, String password) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
     final userAttributes = [
       new AttributeArg(name: 'name', value: name),
@@ -26,10 +26,10 @@ class CognitoService {
     var data;
     data = await userPool.signUp(email, password,
         userAttributes: userAttributes);
-    return SignupResult.Success;
+    return Result.Success;
   }
 
-  static Future<String> check_verification_code(String email, String input_code) async {
+  static Future<Result> check_verification_code(String email, String code) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
 
     final cognitoUser = new CognitoUser(
@@ -37,10 +37,11 @@ class CognitoService {
 
     bool registrationConfirmed = false;
     try {
-      registrationConfirmed = await cognitoUser.confirmRegistration(input_code);
+      registrationConfirmed = await cognitoUser.confirmRegistration(code);
     } catch (e) {
       print(e);
     }
     print(registrationConfirmed);
+    return Result.Success;
   }
 }

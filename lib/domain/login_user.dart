@@ -4,14 +4,24 @@ import '../infrastructure/cognito_service.dart';
 import '../global/result.dart';
 
 abstract class LoginUser {
-  Future<SignupResult> signup(String email, String password);
+  String email;
+
+  Future<Result> signup(String email, String password);
+  Future<Result> check_verification_code(String code);
 }
 
 @RegisterAs(LoginUser)
 @singleton
 @injectable
 class LoginUserImpl extends LoginUser {
-  Future<SignupResult> signup(String email, String password) async {
+
+
+  Future<Result> signup(String email, String password) async {
+    this.email = email;
     return await CognitoService.auth(email, email, password);
+  }
+
+  Future<Result> check_verification_code(String code) async {
+    return await CognitoService.check_verification_code(this.email, code);
   }
 }

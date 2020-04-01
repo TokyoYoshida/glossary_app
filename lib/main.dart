@@ -35,16 +35,17 @@ void main() {
 class MyApp extends StatelessWidget {
   MyTop my_top;
   LoginTopScreen loginTopScreen;
+  MySignup my_signup;
 
-  MyApp(this.my_top, this.loginTopScreen);
+  MyApp(this.my_top, this.loginTopScreen, this.my_signup);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(home: my_top, routes: <String, WidgetBuilder>{
       '/home': (BuildContext context) => new MyCenter(),
-      '/test': (BuildContext context) => new MySignup(),
+      '/test': (BuildContext context) => my_signup,
       '/login': (BuildContext context) => loginTopScreen,
       '/afterlogin': (BuildContext context) => new MyAuthTest(),
-      '/aftersingup': (BuildContext context) => new MySignup()
+      '/aftersingup': (BuildContext context) => my_signup
     });
   }
 }

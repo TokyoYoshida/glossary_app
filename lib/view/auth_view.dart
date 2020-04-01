@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glossaryapp/application/signup_service.dart';
+import 'package:glossaryapp/global/result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:provider/provider.dart';
 
@@ -122,7 +123,12 @@ class MyAuthTest extends StatelessWidget {
 
 final _formKey = GlobalKey<FormState>();
 
+@injectable
 class MySignup extends StatelessWidget {
+  SignupService signup_service;
+
+  MySignup(this.signup_service);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -139,11 +145,14 @@ class MySignup extends StatelessWidget {
                     children: <Widget>[
                       TextFormField(
                         decoration: const InputDecoration(
-                          hintText: 'Enter your email',
+                          hintText: 'verification codeを入れてください。',
                         ),
                         validator: (value) {
                           if (value.isEmpty) {
-                            return 'Please enter some text';
+                            return 'Please enter some code';
+                          }
+                          if (signup_service.check_verification_code(value) != Result.Success) {
+                            return 'verification codeが間違っています。';
                           }
                           return null;
                         },
@@ -154,8 +163,8 @@ class MySignup extends StatelessWidget {
                           onPressed: () {
                             // Validate will return true if the form is valid, or false if
                             // the form is invalid.
+                            print("press");
                             if (_formKey.currentState.validate()) {
-                              // Process data.
                             }
                           },
                           child: Text('Submit'),
