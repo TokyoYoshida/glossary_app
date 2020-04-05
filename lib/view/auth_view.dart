@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:glossaryapp/application/error_message_service.dart';
 import 'package:glossaryapp/application/signup_service.dart';
-import 'package:glossaryapp/global/result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_login/flutter_login.dart';
-import '../application/signup_service.dart';
 import 'dart:async';
 
 const users = const {
@@ -68,18 +67,8 @@ class LoginScreen extends StatelessWidget {
       return null;
     }).catchError((error) {
       print("authviewerror!" + error.toString());
-      return extractErrorMessage(error.toString());
+      return ErrorMessageService.extractFromError(error.toString());
     });
-  }
-
-  String extractErrorMessage(String original) {
-    final exp = RegExp(r'message: ([^}]*)');
-    var list =
-        exp?.allMatches(original).map((match) => match.group(1)).toList();
-    if (list.length == 1) {
-      return list[0];
-    }
-    return "unknown error";
   }
 
   Future<String> _recoverPassword(String name) {
@@ -179,8 +168,7 @@ class MySignup extends StatelessWidget {
                               onPressed: () {
                                 if (this
                                         .signup_service
-                                        .resendVerificationCode() !=
-                                    Result.Success) {
+                                        .resendVerificationCode() != true) {
                                   Scaffold.of(context).showSnackBar(SnackBar(
                                       content: Text(
                                           'verification codeの送信に失敗しました。')));
@@ -192,7 +180,7 @@ class MySignup extends StatelessWidget {
   }
 
   void resendVerificationCode(BuildContext context) {
-    if (this.signup_service.resendVerificationCode() != Result.Success) {
+    if (this.signup_service.resendVerificationCode() != true) {
       Scaffold.of(context).showSnackBar(
           SnackBar(content: Text('verification codeの送信に失敗しました。')));
     }

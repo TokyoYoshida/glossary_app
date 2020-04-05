@@ -1,15 +1,15 @@
+import 'dart:async';
 import 'package:glossaryapp/domain/domain.dart';
 import 'package:glossaryapp/domain/login_user.dart';
 
 import '../infrastructure/cognito_service.dart';
-import '../global/result.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class SignupService {
-  Future<Result> signup(String email, String password);
-  Future<Result> check_verification_code(String code);
-  Future<Result> resendVerificationCode();
+  Future<bool> signup(String email, String password);
+  Future<bool> check_verification_code(String code);
+  Future<bool> resendVerificationCode();
 }
 
 @RegisterAs(SignupService)
@@ -18,15 +18,15 @@ class SignupServiceImpl extends SignupService {
   LoginUser loginUser;
   SignupServiceImpl(this.loginUser);
 
-  Future<Result> signup(String email, String password) async {
+  Future<bool> signup(String email, String password) async {
     return loginUser.signup(email, password);
   }
 
-  Future<Result> check_verification_code(String code) async {
+  Future<bool> check_verification_code(String code) async {
     return loginUser.check_verification_code(code);
   }
 
-  Future<Result> resendVerificationCode() async {
+  Future<bool> resendVerificationCode() async {
     return loginUser.resendVerificationCode();
   }
 }

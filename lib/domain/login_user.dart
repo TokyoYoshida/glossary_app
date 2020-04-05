@@ -1,14 +1,13 @@
 import 'package:injectable/injectable.dart';
 
 import '../infrastructure/cognito_service.dart';
-import '../global/result.dart';
 
 abstract class LoginUser {
   String email;
 
-  Future<Result> signup(String email, String password);
-  Future<Result> check_verification_code(String code);
-  Future<Result> resendVerificationCode();
+  Future<bool> signup(String email, String password);
+  Future<bool> check_verification_code(String code);
+  Future<bool> resendVerificationCode();
 }
 
 @RegisterAs(LoginUser)
@@ -17,16 +16,16 @@ abstract class LoginUser {
 class LoginUserImpl extends LoginUser {
 
 
-  Future<Result> signup(String email, String password) async {
+  Future<bool> signup(String email, String password) async {
     this.email = email;
     return await CognitoService.auth(email, email, password);
   }
 
-  Future<Result> check_verification_code(String code) async {
+  Future<bool> check_verification_code(String code) async {
     return await CognitoService.check_verification_code(this.email, code);
   }
 
-  Future<Result> resendVerificationCode() async {
+  Future<bool> resendVerificationCode() async {
     return await CognitoService.resendVerificationCode(this.email);
   }
 }

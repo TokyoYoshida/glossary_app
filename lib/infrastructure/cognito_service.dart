@@ -3,7 +3,6 @@ import 'package:injectable/injectable.dart';
 import 'dart:async';
 
 import '../config/config.dart';
-import '../global/result.dart';
 
 @injectable
 class CognitoService {
@@ -16,7 +15,7 @@ class CognitoService {
     return "test1";
   }
 
-  static Future<Result> auth(String name, String email, String password) async {
+  static Future<bool> auth(String name, String email, String password) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
     final userAttributes = [
       new AttributeArg(name: 'name', value: name),
@@ -26,10 +25,10 @@ class CognitoService {
     await userPool.signUp(email, password,
         userAttributes: userAttributes);
 
-    return Result.Success;
+    return true;
   }
 
-  static Future<Result> check_verification_code(String email, String code) async {
+  static Future<bool> check_verification_code(String email, String code) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
 
     final cognitoUser = new CognitoUser(
@@ -37,10 +36,10 @@ class CognitoService {
 
     await cognitoUser.confirmRegistration(code);
 
-    return Result.Success;
+    return true;
   }
 
-  static Future<Result> resendVerificationCode(String email) async {
+  static Future<bool> resendVerificationCode(String email) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
 
     final cognitoUser = new CognitoUser(
@@ -51,6 +50,6 @@ class CognitoService {
     status = await cognitoUser.resendConfirmationCode();
     print(status);
 
-    return Result.Success;
+    return true;
   }
 }
