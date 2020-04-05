@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glossaryapp/application/error_message_service.dart';
 import 'package:glossaryapp/application/signup_service.dart';
+import 'package:glossaryapp/application/login_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:provider/provider.dart';
 
@@ -39,15 +40,17 @@ class LoginTopScreen extends StatelessWidget {
 @injectable
 class LoginScreen extends StatelessWidget {
   SignupService signupService;
+  LoginService loginService;
 
-  LoginScreen(this.signupService);
+  LoginScreen(this.signupService, this.loginService);
 
   Duration get loginTime => Duration(milliseconds: 2250);
   var authMode = 0;
 
   Future<String> _authUser(LoginData data) {
     print('Name: ${data.name}, Password: ${data.password}');
-    return signupService.login(data.name, data.password).then((result) {
+    print(signupService);
+    return loginService.login(data.name, data.password).then((result) {
       print("success!");
       authMode = 2;
       return "";

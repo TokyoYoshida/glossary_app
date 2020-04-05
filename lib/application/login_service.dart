@@ -8,9 +8,9 @@ abstract class LoginService {
 
 @RegisterAs(LoginService)
 @injectable
-class SignupServiceImpl extends LoginService {
+class LoginServiceImpl extends LoginService {
   LoginUser loginUser;
-  SignupServiceImpl(this.loginUser);
+  LoginServiceImpl(this.loginUser);
 
   Future<bool> login(String email, String password) async {
     return loginUser.login(email, password);
