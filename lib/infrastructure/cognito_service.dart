@@ -28,18 +28,6 @@ class CognitoService {
     return true;
   }
 
-  static Future<bool> getVerificationCode(String email) async {
-    final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
-
-    final cognitoUser = new CognitoUser(
-        email, userPool);
-
-    var data = await cognitoUser.getAttributeVerificationCode(email);
-    print(data);
-
-    return true;
-  }
-
   static Future<bool> check_verification_code(String email, String code) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
 
@@ -65,10 +53,10 @@ class CognitoService {
     return true;
   }
 
-  static Future<bool> login(String name, String email, String password) async {
+  static Future<bool> login(String name, String password) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
     final cognitoUser = new CognitoUser(
-        email, userPool);
+        'email@inspire.my', userPool);
     final authDetails = new AuthenticationDetails(
         username: name, password: password);
 
