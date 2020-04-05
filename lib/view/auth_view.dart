@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:glossaryapp/application/error_message_service.dart';
 import 'package:glossaryapp/application/signup_service.dart';
 import 'package:glossaryapp/application/login_service.dart';
+import 'package:glossaryapp/application/verification_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:provider/provider.dart';
 
@@ -41,8 +42,9 @@ class LoginTopScreen extends StatelessWidget {
 class LoginScreen extends StatelessWidget {
   SignupService signupService;
   LoginService loginService;
+  VerificationService verificationService;
 
-  LoginScreen(this.signupService, this.loginService);
+  LoginScreen(this.signupService, this.loginService, this.verificationService);
 
   Duration get loginTime => Duration(milliseconds: 2250);
   var authMode = 0;
@@ -52,7 +54,7 @@ class LoginScreen extends StatelessWidget {
     print(signupService);
     return loginService.login(data.name, data.password).then((result) {
       print("success!");
-      authMode = 2;
+      authMode = 1;
       return "";
     }).catchError((error) {
       print("authviewerror!" + error.toString());
@@ -91,6 +93,7 @@ class LoginScreen extends StatelessWidget {
         onLogin: _authUser,
         onSignup: _signupUser,
         onSubmitAnimationCompleted: () {
+          verificationService.isNeedVerification();
           if (authMode == 1) {
             Navigator.of(context).pushNamed('/afterlogin');
           } else {
@@ -116,20 +119,24 @@ final _formKey = GlobalKey<FormState>();
 @injectable
 class MySignup extends StatefulWidget {
   SignupService signup_service;
-  MySignup(this.signup_service);
+  VerificationService verificationService;
+
+  MySignup(this.signup_service, this.verificationService);
 
   @override
-  MySignupState createState() => MySignupState(this.signup_service);
+  MySignupState createState() => MySignupState(signup_service, verificationService);
 }
 
 
 @injectable
 class MySignupState extends State<MySignup> {
   SignupService signup_service;
+  VerificationService verificationService;
+
   final verificationCodeTextController = TextEditingController();
   String validatorResult;
 
-  MySignupState(this.signup_service);
+  MySignupState(this.signup_service, this.verificationService);
 
   // This widget is the root of your application.
   @override
@@ -164,7 +171,7 @@ class MySignupState extends State<MySignup> {
                               onPressed: () async {
                                 // Validate will return true if the form is valid, or false if
                                 // the form is invalid.
-                                signup_service
+                                verificationService
                                     .check_verification_code(verificationCodeTextController.text)
                                     .then((result) {
                                   Navigator.of(context).pushNamed('/home');
@@ -190,8 +197,7 @@ class MySignupState extends State<MySignup> {
   }
 
   void resendVerificationCode(BuildContext context) {
-    this
-        .signup_service
+    verificationService
         .resendVerificationCode().then((result) {
     print("success!");
     Scaffold.of(context).showSnackBar(SnackBar(
