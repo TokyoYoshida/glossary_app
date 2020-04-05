@@ -64,6 +64,10 @@ class LoginScreen extends StatelessWidget {
       authMode = 2;
       return "";
     }).catchError((error) {
+      if(error.code == "UsernameExistsException") {
+        // TODO: ここでVerification code再送確認のダイアログを出す。
+        return "";
+      }
       return ErrorMessageService.extractFromError(error.toString());
     });
   }
