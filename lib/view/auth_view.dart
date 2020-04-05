@@ -114,10 +114,22 @@ class MyAuthTest extends StatelessWidget {
 final _formKey = GlobalKey<FormState>();
 
 @injectable
-class MySignup extends StatelessWidget {
+class MySignup extends StatefulWidget {
   SignupService signup_service;
-
   MySignup(this.signup_service);
+
+  @override
+  MySignupState createState() => MySignupState(this.signup_service);
+}
+
+
+@injectable
+class MySignupState extends State<MySignup> {
+  SignupService signup_service;
+  final verificationCodeTextController = TextEditingController();
+  String validatorResult;
+
+  MySignupState(this.signup_service);
 
   // This widget is the root of your application.
   @override
@@ -135,6 +147,7 @@ class MySignup extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           TextFormField(
+                            controller: verificationCodeTextController,
                             decoration: const InputDecoration(
                               hintText: 'verification codeを入れてください。',
                             ),
@@ -142,23 +155,26 @@ class MySignup extends StatelessWidget {
                               if (value.isEmpty) {
                                 return 'Please enter some code';
                               }
-                              signup_service
-                                  .check_verification_code(value)
-                                  .then((result) {
-                                return null;
-                              }).catchError((error) {
-                                return error.toString();
-                              });
-                              return null;
+                              return this.validatorResult;
                             },
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 16.0),
                             child: RaisedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 // Validate will return true if the form is valid, or false if
                                 // the form is invalid.
-                                print("press");
+                                signup_service
+                                    .check_verification_code(verificationCodeTextController.text)
+                                    .then((result) {
+                                  Navigator.of(context).pushNamed('/home');
+                                }).catchError((error) {
+                                  var err =  ErrorMessageService.extractFromError(error.toString());
+                                  setState(() {
+                                    print(err);
+                                    this.validatorResult = "失敗しました。";
+                                  });
+                                });
                                 if (_formKey.currentState.validate()) {}
                               },
                               child: Text('確認する'),
@@ -174,16 +190,18 @@ class MySignup extends StatelessWidget {
   }
 
   void resendVerificationCode(BuildContext context) {
-    if (this
+    this
         .signup_service
-        .resendVerificationCode() != true) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text(
-              'verification codeの送信に失敗しました。')));
-      return;
-    }
-
-    Navigator.of(context).pushNamed('/home');
-
+        .resendVerificationCode().then((result) {
+    print("success!");
+    Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(
+            'verification codeを送信しました。')));
+    }).catchError((error) {
+    print("authviewerror!" + error.toString());
+    Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(
+            'verification codeに失敗しました。')));
+    });
   }
 }
