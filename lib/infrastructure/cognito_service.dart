@@ -23,9 +23,9 @@ class CognitoService {
       new AttributeArg(name: 'email', value: email),
     ];
 
-    var data;
-    data = await userPool.signUp(email, password,
+    await userPool.signUp(email, password,
         userAttributes: userAttributes);
+
     return Result.Success;
   }
 
@@ -35,12 +35,8 @@ class CognitoService {
     final cognitoUser = new CognitoUser(
         email, userPool);
 
-    bool registrationConfirmed = false;
-    try {
-      registrationConfirmed = await cognitoUser.confirmRegistration(code);
-    } catch (e) {
-      print(e);
-    }
+    await cognitoUser.confirmRegistration(code);
+
     return Result.Success;
   }
 
@@ -51,12 +47,10 @@ class CognitoService {
         email, userPool);
 
     var status;
-    try {
-      status = await cognitoUser.resendConfirmationCode();
-    } catch (e) {
-      print(e);
-    }
+
+    status = await cognitoUser.resendConfirmationCode();
     print(status);
+
     return Result.Success;
   }
 }

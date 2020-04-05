@@ -27,6 +27,7 @@ class LoginTopScreen extends StatelessWidget {
   LoginScreen loginScreen;
 
   LoginTopScreen(this.loginScreen);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -61,11 +62,10 @@ class LoginScreen extends StatelessWidget {
 
   Future<String> _signupUser(LoginData data) {
     print('Name: ${data.name}, Password: ${data.password}');
-    return signupService.signup(data.name, data.password)
-        .then((result) {
+    return signupService.signup(data.name, data.password).then((result) {
       print("success!");
       authMode = 2;
-      return "success";
+      return null;
     }).catchError((error) {
       print("authviewerror!" + error.toString());
       return extractErrorMessage(error.toString());
@@ -133,55 +133,68 @@ class MySignup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        body: Form(
-            key: _formKey,
-            child: new Container(
-                padding: const EdgeInsets.all(30.0),
-                color: Colors.white,
+        body: Builder(
+            builder: (context) => Form(
+                key: _formKey,
                 child: new Container(
-                    child: new Center(
-                  child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          hintText: 'verification codeを入れてください。',
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter some code';
-                          }
-                          signup_service.check_verification_code(value)
-                              .then((result) {
-                            return null;
-                          }).catchError((error) {
-                            return error.toString();
-                          });
-                          return null;
-                        },
+                    padding: const EdgeInsets.all(30.0),
+                    color: Colors.white,
+                    child: new Container(
+                        child: new Center(
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              hintText: 'verification codeを入れてください。',
+                            ),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter some code';
+                              }
+                              signup_service
+                                  .check_verification_code(value)
+                                  .then((result) {
+                                return null;
+                              }).catchError((error) {
+                                return error.toString();
+                              });
+                              return null;
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: RaisedButton(
+                              onPressed: () {
+                                // Validate will return true if the form is valid, or false if
+                                // the form is invalid.
+                                print("press");
+                                if (_formKey.currentState.validate()) {}
+                              },
+                              child: Text('確認する'),
+                            ),
+                          ),
+                          RaisedButton(
+                              child: Text('verification codeを再送する'),
+                              onPressed: () {
+                                if (this
+                                        .signup_service
+                                        .resendVerificationCode() !=
+                                    Result.Success) {
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                      content: Text(
+                                          'verification codeの送信に失敗しました。')));
+                                }
+                              })
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        child: RaisedButton(
-                          onPressed: () {
-                            // Validate will return true if the form is valid, or false if
-                            // the form is invalid.
-                            print("press");
-                            if (_formKey.currentState.validate()) {
-                            }
-                          },
-                          child: Text('Submit'),
-                        ),
-                      ),
-                      RaisedButton(
-                          child: Text('verification codeを再送する'),
-                          onPressed: () => resendVerificationCode()),
-                    ],
-                  ),
-                )))));
+                    ))))));
   }
 
-  void resendVerificationCode() {
-    this.signup_service.resendVerificationCode();
+  void resendVerificationCode(BuildContext context) {
+    if (this.signup_service.resendVerificationCode() != Result.Success) {
+      Scaffold.of(context).showSnackBar(
+          SnackBar(content: Text('verification codeの送信に失敗しました。')));
+    }
   }
 }
