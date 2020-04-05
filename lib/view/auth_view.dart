@@ -51,11 +51,9 @@ class LoginScreen extends StatelessWidget {
     print('Name: ${data.name}, Password: ${data.password}');
     print(signupService);
     return loginService.login(data.name, data.password).then((result) {
-      print("success!");
       authMode = 2;
       return "";
     }).catchError((error) {
-      print("authviewerror!" + error.toString());
       return ErrorMessageService.extractFromError(error.toString());
     });
   }
@@ -63,11 +61,9 @@ class LoginScreen extends StatelessWidget {
   Future<String> _signupUser(LoginData data) {
     print('Name: ${data.name}, Password: ${data.password}');
     return signupService.signup(data.name, data.password).then((result) {
-      print("success!");
       authMode = 2;
       return "";
     }).catchError((error) {
-      print("authviewerror!" + error.toString());
       return ErrorMessageService.extractFromError(error.toString());
     });
   }
