@@ -55,7 +55,7 @@ class LoginScreen extends StatelessWidget {
         return 'Password does not match';
       }
       authMode = 1;
-      return null;
+      return "success";
     });
   }
 
@@ -65,7 +65,7 @@ class LoginScreen extends StatelessWidget {
         .then((result) {
       print("success!");
       authMode = 2;
-      return null;
+      return "success";
     }).catchError((error) {
       print("authviewerror!" + error.toString());
       return extractErrorMessage(error.toString());
@@ -173,8 +173,15 @@ class MySignup extends StatelessWidget {
                           child: Text('Submit'),
                         ),
                       ),
+                      RaisedButton(
+                          child: Text('verification codeを再送する'),
+                          onPressed: () => resendVerificationCode()),
                     ],
                   ),
                 )))));
+  }
+
+  void resendVerificationCode() {
+    this.signup_service.resendVerificationCode();
   }
 }

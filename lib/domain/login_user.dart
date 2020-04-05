@@ -8,6 +8,7 @@ abstract class LoginUser {
 
   Future<Result> signup(String email, String password);
   Future<Result> check_verification_code(String code);
+  Future<Result> resendVerificationCode();
 }
 
 @RegisterAs(LoginUser)
@@ -23,5 +24,9 @@ class LoginUserImpl extends LoginUser {
 
   Future<Result> check_verification_code(String code) async {
     return await CognitoService.check_verification_code(this.email, code);
+  }
+
+  Future<Result> resendVerificationCode() async {
+    return await CognitoService.resendVerificationCode(this.email);
   }
 }

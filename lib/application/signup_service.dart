@@ -9,6 +9,7 @@ import 'package:injectable/injectable.dart';
 abstract class SignupService {
   Future<Result> signup(String email, String password);
   Future<Result> check_verification_code(String code);
+  Future<Result> resendVerificationCode();
 }
 
 @RegisterAs(SignupService)
@@ -23,5 +24,9 @@ class SignupServiceImpl extends SignupService {
 
   Future<Result> check_verification_code(String code) async {
     return loginUser.check_verification_code(code);
+  }
+
+  Future<Result> resendVerificationCode() async {
+    return loginUser.resendVerificationCode();
   }
 }

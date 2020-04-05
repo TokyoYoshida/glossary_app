@@ -41,7 +41,22 @@ class CognitoService {
     } catch (e) {
       print(e);
     }
-    print(registrationConfirmed);
+    return Result.Success;
+  }
+
+  static Future<Result> resendVerificationCode(String email) async {
+    final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
+
+    final cognitoUser = new CognitoUser(
+        email, userPool);
+
+    var status;
+    try {
+      status = await cognitoUser.resendConfirmationCode();
+    } catch (e) {
+      print(e);
+    }
+    print(status);
     return Result.Success;
   }
 }
