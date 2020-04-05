@@ -47,15 +47,13 @@ class LoginScreen extends StatelessWidget {
 
   Future<String> _authUser(LoginData data) {
     print('Name: ${data.name}, Password: ${data.password}');
-    return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(data.name)) {
-        return 'Username not exists';
-      }
-      if (users[data.name] != data.password) {
-        return 'Password does not match';
-      }
-      authMode = 1;
-      return "success";
+    return signupService.login(data.name, data.password).then((result) {
+      print("success!");
+      authMode = 2;
+      return "";
+    }).catchError((error) {
+      print("authviewerror!" + error.toString());
+      return ErrorMessageService.extractFromError(error.toString());
     });
   }
 
@@ -64,7 +62,7 @@ class LoginScreen extends StatelessWidget {
     return signupService.signup(data.name, data.password).then((result) {
       print("success!");
       authMode = 2;
-      return null;
+      return "";
     }).catchError((error) {
       print("authviewerror!" + error.toString());
       return ErrorMessageService.extractFromError(error.toString());
@@ -77,7 +75,7 @@ class LoginScreen extends StatelessWidget {
       if (!users.containsKey(name)) {
         return 'Username not exists';
       }
-      return null;
+      return "";
     });
   }
 
@@ -165,24 +163,24 @@ class MySignup extends StatelessWidget {
                           ),
                           RaisedButton(
                               child: Text('verification codeを再送する'),
-                              onPressed: () {
-                                if (this
-                                        .signup_service
-                                        .resendVerificationCode() != true) {
-                                  Scaffold.of(context).showSnackBar(SnackBar(
-                                      content: Text(
-                                          'verification codeの送信に失敗しました。')));
-                                }
-                              })
+                              onPressed: () => resendVerificationCode(context)
+                              )
                         ],
                       ),
                     ))))));
   }
 
   void resendVerificationCode(BuildContext context) {
-    if (this.signup_service.resendVerificationCode() != true) {
-      Scaffold.of(context).showSnackBar(
-          SnackBar(content: Text('verification codeの送信に失敗しました。')));
+    if (this
+        .signup_service
+        .resendVerificationCode() != true) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text(
+              'verification codeの送信に失敗しました。')));
+      return;
     }
+
+    Navigator.of(context).pushNamed('/home');
+
   }
 }

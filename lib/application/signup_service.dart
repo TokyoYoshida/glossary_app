@@ -1,10 +1,6 @@
 import 'dart:async';
-import 'package:glossaryapp/domain/domain.dart';
-import 'package:glossaryapp/domain/login_user.dart';
-
-import '../infrastructure/cognito_service.dart';
-import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:glossaryapp/domain/login_user.dart';
 
 abstract class SignupService {
   Future<bool> signup(String email, String password);

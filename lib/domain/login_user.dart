@@ -15,7 +15,6 @@ abstract class LoginUser {
 @injectable
 class LoginUserImpl extends LoginUser {
 
-
   Future<bool> signup(String email, String password) async {
     this.email = email;
     return await CognitoService.auth(email, email, password);
@@ -27,5 +26,10 @@ class LoginUserImpl extends LoginUser {
 
   Future<bool> resendVerificationCode() async {
     return await CognitoService.resendVerificationCode(this.email);
+  }
+
+  Future<bool> login(String email, String password) async {
+    this.email = email;
+    return await CognitoService.auth(email, email, password);
   }
 }

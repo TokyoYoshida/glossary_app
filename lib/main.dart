@@ -73,7 +73,7 @@ class MyTop extends StatelessWidget {
                 ),
               ),
               RaisedButton(
-                  child: Text('起動'),
+                  child: Text('homeへ'),
                   onPressed: () => Navigator.of(context).pushNamed('/home')),
               RaisedButton(
                   child: Text('sinupテスト'),

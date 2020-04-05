@@ -52,4 +52,17 @@ class CognitoService {
 
     return true;
   }
+
+  static Future<bool> siginin(String name, String email, String password) async {
+    final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
+    final userAttributes = [
+      new AttributeArg(name: 'name', value: name),
+      new AttributeArg(name: 'email', value: email),
+    ];
+
+    await userPool.signUp(email, password,
+        userAttributes: userAttributes);
+
+    return true;
+  }
 }
