@@ -67,27 +67,29 @@ class LoginScreen extends StatelessWidget {
       return "";
     }).catchError((error) async {
       if(error.code == "UsernameExistsException") {
-        var result = await showDialog<int>(
+        var result = await showDialog<bool>(
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('確認'),
-              content: Text('確認のダイアログです。'),
+              title: Text('すでに登録済です'),
+              content: Text('Verification Codeを再送しますか？'),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('Cancel'),
-                  onPressed: () => Navigator.of(context).pop(0),
+                  child: Text('いいえ'),
+                  onPressed: () => Navigator.of(context).pop(false),
                 ),
                 FlatButton(
-                  child: Text('OK'),
-                  onPressed: () => Navigator.of(context).pop(1),
+                  child: Text('はい'),
+                  onPressed: () => Navigator.of(context).pop(true),
                 ),
               ],
             );
           },
         );
-        print('dialog result: $result');
+        if (result == true){
+          CommonView.resendVerificationCode(context, signupService);
+        }
         return "";
       }
       return ErrorMessageService.extractFromError(error.toString());
@@ -206,26 +208,27 @@ class MySignupState extends State<MySignup> {
                           ),
                           RaisedButton(
                               child: Text('verification codeを再送する'),
-                              onPressed: () => resendVerificationCode(context)
+                              onPressed: () => CommonView.resendVerificationCode(context, signup_service)
                               )
                         ],
                       ),
                     ))))));
   }
+}
 
-  void resendVerificationCode(BuildContext context) {
-    this
-        .signup_service
+class CommonView {
+  static void resendVerificationCode(BuildContext context, SignupService signup_service) {
+    signup_service
         .resendVerificationCode().then((result) {
-    print("success!");
-    Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text(
-            'verification codeを送信しました。')));
+      print("success!");
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text(
+              'verification codeを送信しました。')));
     }).catchError((error) {
-    print("authviewerror!" + error.toString());
-    Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text(
-            'verification codeに失敗しました。')));
+      print("authviewerror!" + error.toString());
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text(
+              'verification codeに失敗しました。')));
     });
   }
 }
