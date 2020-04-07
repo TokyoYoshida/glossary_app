@@ -89,6 +89,7 @@ class LoginScreen extends StatelessWidget {
         );
         if (result == true){
           CommonView.resendVerificationCode(context, signupService);
+          await Future.delayed(Duration(milliseconds: 3000));
         }
         return "";
       }
