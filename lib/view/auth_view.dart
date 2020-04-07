@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
+import 'package:provider/provider.dart';
+import 'dart:async';
+
 import 'package:glossaryapp/application/error_message_service.dart';
 import 'package:glossaryapp/application/signup_service.dart';
 import 'package:glossaryapp/application/login_service.dart';
-import 'package:injectable/injectable.dart';
-import 'package:provider/provider.dart';
 
 import 'package:flutter_login/flutter_login.dart';
 import 'dart:async';
@@ -58,14 +60,34 @@ class LoginScreen extends StatelessWidget {
     });
   }
 
-  Future<String> _signupUser(LoginData data) {
+  Future<String> _signupUser(LoginData data, BuildContext context) {
     print('Name: ${data.name}, Password: ${data.password}');
     return signupService.signup(data.name, data.password).then((result) {
       authMode = 2;
       return "";
-    }).catchError((error) {
+    }).catchError((error) async {
       if(error.code == "UsernameExistsException") {
-        // TODO: ここでVerification code再送確認のダイアログを出す。
+        var result = await showDialog<int>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('確認'),
+              content: Text('確認のダイアログです。'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Cancel'),
+                  onPressed: () => Navigator.of(context).pop(0),
+                ),
+                FlatButton(
+                  child: Text('OK'),
+                  onPressed: () => Navigator.of(context).pop(1),
+                ),
+              ],
+            );
+          },
+        );
+        print('dialog result: $result');
         return "";
       }
       return ErrorMessageService.extractFromError(error.toString());
@@ -89,7 +111,9 @@ class LoginScreen extends StatelessWidget {
         title: 'ECORP',
         logo: 'assets/images/ecorp-lightblue.png',
         onLogin: _authUser,
-        onSignup: _signupUser,
+        onSignup: (loginData) {
+          return _signupUser(loginData, context);
+        },
         onSubmitAnimationCompleted: () {
           if (authMode == 1) {
             Navigator.of(context).pushNamed('/afterlogin');
