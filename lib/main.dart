@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
       '/test': (BuildContext context) => my_signup,
       '/login': (BuildContext context) => loginTopScreen,
       '/afterlogin': (BuildContext context) => new MyAuthTest(),
-      '/aftersingup': (BuildContext context) => my_signup
+      '/checkVerificationCode': (BuildContext context) => my_signup
     });
   }
 }

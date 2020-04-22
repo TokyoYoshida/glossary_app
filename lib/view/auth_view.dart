@@ -73,7 +73,7 @@ class LoginScreen extends StatelessWidget {
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text('すでに登録済です'),
-              content: Text('Verification Codeを再送しますか？'),
+              content: Text('このままログインしますか？'),
               actions: <Widget>[
                 FlatButton(
                   child: Text('いいえ'),
@@ -88,10 +88,8 @@ class LoginScreen extends StatelessWidget {
           },
         );
         if (result == true){
-          CommonView.resendVerificationCode(context, signupService);
-          await Future.delayed(Duration(milliseconds: 3000));
+          return "";
         }
-        return "";
       }
       return ErrorMessageService.extractFromError(error.toString());
     });
@@ -117,12 +115,13 @@ class LoginScreen extends StatelessWidget {
         onSignup: (loginData) {
           return _signupUser(loginData, context);
         },
-        onSubmitAnimationCompleted: () {
-          if (authMode == 1) {
-            Navigator.of(context).pushNamed('/afterlogin');
-          } else {
-            Navigator.of(context).pushNamed('/aftersingup');
-          }
+        onSubmitAnimationCompleted: () async {
+//          bool isConfirmed = await signupService.isConfirmed();
+//          if (isConfirmed){
+//            Navigator.of(context).pushNamed('/afterlogin');
+//            return;
+//          }
+          Navigator.of(context).pushNamed('/checkVerificationCode');
         },
         onRecoverPassword: _recoverPassword,
       );
@@ -204,7 +203,7 @@ class MySignupState extends State<MySignup> {
                                 });
                                 if (_formKey.currentState.validate()) {}
                               },
-                              child: Text('確認する'),
+                              child: Text('送信する'),
                             ),
                           ),
                           RaisedButton(

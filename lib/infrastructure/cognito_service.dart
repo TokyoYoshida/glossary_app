@@ -7,7 +7,7 @@ import '../config/config.dart';
 @injectable
 class CognitoService {
   static String test() {
-    CognitoService.auth(testUserEmail,testUserEmail,testUserPassword)
+    CognitoService.signup(testUserEmail,testUserEmail,testUserPassword)
     .then((result) {
       print("success!");
     });
@@ -15,7 +15,7 @@ class CognitoService {
     return "test1";
   }
 
-  static Future<bool> auth(String name, String email, String password) async {
+  static Future<bool> signup(String name, String email, String password) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
     final userAttributes = [
       new AttributeArg(name: 'name', value: name),
@@ -51,6 +51,24 @@ class CognitoService {
     print(status);
 
     return true;
+  }
+
+  static Future<bool> isConfirmed(String email) async {
+    List<CognitoUserAttribute> attr = await CognitoService.getUserInfo(email);
+    return true;
+  }
+
+  static Future<List<CognitoUserAttribute>> getUserInfo(String email) async {
+    final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
+
+    final cognitoUser = new CognitoUser(
+        email, userPool);
+
+    List<CognitoUserAttribute> attributes = await cognitoUser.getUserAttributes();
+
+    print(attributes);
+
+    return attributes;
   }
 
   static Future<bool> login(String name, String password) async {

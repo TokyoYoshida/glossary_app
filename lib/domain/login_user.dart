@@ -9,6 +9,13 @@ abstract class LoginUser {
   Future<bool> check_verification_code(String code);
   Future<bool> resendVerificationCode();
   Future<bool> login(String email, String password);
+  Future<bool> isConfirmed();
+}
+
+enum LoginUserStatus {
+  UnSignup,
+  UnConfirm,
+  LoggedIn
 }
 
 @RegisterAs(LoginUser)
@@ -18,7 +25,7 @@ class LoginUserImpl extends LoginUser {
 
   Future<bool> signup(String email, String password) async {
     this.email = email;
-    return await CognitoService.auth(email, email, password);
+    return await CognitoService.signup(email, email, password);
   }
 
   Future<bool> check_verification_code(String code) async {
@@ -27,6 +34,10 @@ class LoginUserImpl extends LoginUser {
 
   Future<bool> resendVerificationCode() async {
     return await CognitoService.resendVerificationCode(this.email);
+  }
+
+  Future<bool> isConfirmed() async {
+    return await CognitoService.isConfirmed(this.email);
   }
 
   Future<bool> login(String email, String password) async {

@@ -6,6 +6,7 @@ abstract class SignupService {
   Future<bool> signup(String email, String password);
   Future<bool> check_verification_code(String code);
   Future<bool> resendVerificationCode();
+  Future<bool> isConfirmed();
 }
 
 @RegisterAs(SignupService)
@@ -24,5 +25,9 @@ class SignupServiceImpl extends SignupService {
 
   Future<bool> resendVerificationCode() async {
     return loginUser.resendVerificationCode();
+  }
+
+  Future<bool> isConfirmed() async {
+    return loginUser.isConfirmed();
   }
 }
