@@ -78,7 +78,7 @@ class LoginResult {
   }
 
   LoginResultCode buildCode(Exception exception) {
-    if (exception is CognitoUserConfirmationNecessaryException){
+    if (exception is CognitoClientException && exception.code == "UserNotConfirmedException") {
       return LoginResultCode.NotConfirmedError;
     }
     return LoginResultCode.UnknownError;
@@ -93,7 +93,7 @@ class LoginResult {
   }
 
   bool isSuccess() {
-    return _code == SignupResultCode.Success;
+    return _code == LoginResultCode.Success;
   }
 }
 
