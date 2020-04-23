@@ -50,7 +50,7 @@ class LoginScreen extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
   bool needConfirm = false;
 
-  Future<String> _authUser(LoginData data) {
+  Future<String> _login(LoginData data) {
     print('Name: ${data.name}, Password: ${data.password}');
     print(signupService);
     return loginService.login(data.name, data.password).then((result) {
@@ -67,7 +67,7 @@ class LoginScreen extends StatelessWidget {
     });
   }
 
-  Future<String> _signupUser(LoginData data, BuildContext context) {
+  Future<String> signup(LoginData data, BuildContext context) {
     print('Name: ${data.name}, Password: ${data.password}');
     return signupService.signup(data.name, data.password).then((result) async {
       if (result.isSuccess()) {
@@ -121,13 +121,14 @@ class LoginScreen extends StatelessWidget {
       return FlutterLogin(
         title: 'ECORP',
         logo: 'assets/images/ecorp-lightblue.png',
-        onLogin: _authUser,
+        onLogin: _login,
         onSignup: (loginData) {
-          return _signupUser(loginData, context);
+          return signup(loginData, context);
         },
         onSubmitAnimationCompleted: () async {
           if (needConfirm) {
             Navigator.of(context).pushNamed('/checkVerificationCode');
+            return;
           }
           Navigator.of(context).pushNamed('/home');
         },
