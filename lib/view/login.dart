@@ -16,30 +16,6 @@ const users = const {
   'hunter@gmail.com': 'hunter',
 };
 
-class CounterStore with ChangeNotifier {
-  var count = 0;
-
-  void incrementCounter() {
-    count++;
-    notifyListeners();
-  }
-}
-
-@injectable
-class LoginTopScreen extends StatelessWidget {
-  LoginScreen loginScreen;
-
-  LoginTopScreen(this.loginScreen);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-        body: ChangeNotifierProvider(
-            create: (context) => CounterStore(), child: loginScreen));
-  }
-}
-
 @injectable
 class LoginScreen extends StatelessWidget {
   SignupService signupService;
@@ -96,7 +72,7 @@ class LoginScreen extends StatelessWidget {
             );
           },
         );
-        if (result == true){
+        if (result == true) {
           return "";
         }
       }
@@ -117,24 +93,22 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CounterStore>(builder: (context, counterStore, _) {
-      return FlutterLogin(
-        title: 'ECORP',
-        logo: 'assets/images/ecorp-lightblue.png',
-        onLogin: _login,
-        onSignup: (loginData) {
-          return signup(loginData, context);
-        },
-        onSubmitAnimationCompleted: () async {
-          if (needConfirm) {
-            Navigator.of(context).pushNamed('/checkVerificationCode');
-            return;
-          }
-          Navigator.of(context).pushNamed('/home');
-        },
-        onRecoverPassword: _recoverPassword,
-      );
-    });
+    return FlutterLogin(
+      title: 'ECORP',
+      logo: 'assets/images/ecorp-lightblue.png',
+      onLogin: _login,
+      onSignup: (loginData) {
+        return signup(loginData, context);
+      },
+      onSubmitAnimationCompleted: () async {
+        if (needConfirm) {
+          Navigator.of(context).pushNamed('/checkVerificationCode');
+          return;
+        }
+        Navigator.of(context).pushNamed('/home');
+      },
+      onRecoverPassword: _recoverPassword,
+    );
   }
 }
 
@@ -151,12 +125,12 @@ final _formKey = GlobalKey<FormState>();
 @injectable
 class MySignup extends StatefulWidget {
   SignupService signup_service;
+
   MySignup(this.signup_service);
 
   @override
   MySignupState createState() => MySignupState(this.signup_service);
 }
-
 
 @injectable
 class MySignupState extends State<MySignup> {
@@ -200,11 +174,14 @@ class MySignupState extends State<MySignup> {
                                 // Validate will return true if the form is valid, or false if
                                 // the form is invalid.
                                 signup_service
-                                    .check_verification_code(verificationCodeTextController.text)
+                                    .check_verification_code(
+                                        verificationCodeTextController.text)
                                     .then((result) {
                                   Navigator.of(context).pushNamed('/home');
                                 }).catchError((error) {
-                                  var err =  ErrorMessageService.extractFromError(error.toString());
+                                  var err =
+                                      ErrorMessageService.extractFromError(
+                                          error.toString());
                                   setState(() {
                                     print(err);
                                     this.validatorResult = "失敗しました。";
@@ -217,8 +194,9 @@ class MySignupState extends State<MySignup> {
                           ),
                           RaisedButton(
                               child: Text('verification codeを再送する'),
-                              onPressed: () => CommonView.resendVerificationCode(context, signup_service)
-                              )
+                              onPressed: () =>
+                                  CommonView.resendVerificationCode(
+                                      context, signup_service))
                         ],
                       ),
                     ))))));
@@ -226,18 +204,16 @@ class MySignupState extends State<MySignup> {
 }
 
 class CommonView {
-  static void resendVerificationCode(BuildContext context, SignupService signup_service) {
-    signup_service
-        .resendVerificationCode().then((result) {
+  static void resendVerificationCode(
+      BuildContext context, SignupService signup_service) {
+    signup_service.resendVerificationCode().then((result) {
       print("success!");
-      Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text(
-              'verification codeを送信しました。')));
+      Scaffold.of(context)
+          .showSnackBar(SnackBar(content: Text('verification codeを送信しました。')));
     }).catchError((error) {
       print("authviewerror!" + error.toString());
-      Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text(
-              'verification codeに失敗しました。')));
+      Scaffold.of(context)
+          .showSnackBar(SnackBar(content: Text('verification codeに失敗しました。')));
     });
   }
 }

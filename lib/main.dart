@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'domain/domain.dart';
 import 'infrastructure/cognito_service.dart';
-import 'view/auth_view.dart';
+import 'view/login.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -34,16 +34,16 @@ void main() {
 @injectable
 class MyApp extends StatelessWidget {
   MyTop my_top;
-  LoginTopScreen loginTopScreen;
+  LoginScreen login;
   MySignup my_signup;
 
-  MyApp(this.my_top, this.loginTopScreen, this.my_signup);
+  MyApp(this.my_top, this.login, this.my_signup);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(home: my_top, routes: <String, WidgetBuilder>{
       '/home': (BuildContext context) => new MyCenter(),
       '/test': (BuildContext context) => my_signup,
-      '/login': (BuildContext context) => loginTopScreen,
+      '/login': (BuildContext context) => login,
       '/afterlogin': (BuildContext context) => new MyAuthTest(),
       '/checkVerificationCode': (BuildContext context) => my_signup
     });

@@ -10,7 +10,7 @@ import 'package:glossaryapp/domain/login_user.dart';
 import 'package:glossaryapp/main.dart';
 import 'package:glossaryapp/application/signup_service.dart';
 import 'package:glossaryapp/application/login_service.dart';
-import 'package:glossaryapp/view/auth_view.dart';
+import 'package:glossaryapp/view/login.dart';
 import 'package:get_it/get_it.dart';
 
 void $initGetIt(GetIt g, {String environment}) {
@@ -24,10 +24,9 @@ void $initGetIt(GetIt g, {String environment}) {
       () => LoginScreen(g<SignupService>(), g<LoginService>()));
   g.registerFactory<MySignup>(() => MySignup(g<SignupService>()));
   g.registerFactory<MySignupState>(() => MySignupState(g<SignupService>()));
-  g.registerFactory<LoginTopScreen>(() => LoginTopScreen(g<LoginScreen>()));
   g.registerFactory<MyApp>(() => MyApp(
         g<MyTop>(),
-        g<LoginTopScreen>(),
+        g<LoginScreen>(),
         g<MySignup>(),
       ));
 
