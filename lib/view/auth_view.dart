@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:glossaryapp/application/error_message_service.dart';
 import 'package:glossaryapp/application/signup_service.dart';
 import 'package:glossaryapp/application/login_service.dart';
+import 'package:glossaryapp/infrastructure/cognito_service.dart';
 
 import 'package:flutter_login/flutter_login.dart';
 import 'dart:async';
@@ -53,20 +54,24 @@ class LoginScreen extends StatelessWidget {
     print('Name: ${data.name}, Password: ${data.password}');
     print(signupService);
     return loginService.login(data.name, data.password).then((result) {
-      authMode = 2;
-      return "";
-    }).catchError((error) {
-      return ErrorMessageService.extractFromError(error.toString());
+      if (result.isSuccess()) {
+        authMode = 2;
+        return "";
+      }
+
+      return result.getDescription();
     });
   }
 
   Future<String> _signupUser(LoginData data, BuildContext context) {
     print('Name: ${data.name}, Password: ${data.password}');
-    return signupService.signup(data.name, data.password).then((result) {
-      authMode = 2;
-      return "";
-    }).catchError((error) async {
-      if(error.code == "UsernameExistsException") {
+    return signupService.signup(data.name, data.password).then((result) async {
+      if (result.isSuccess()) {
+        authMode = 2;
+        return "";
+      }
+
+      if (result.getCode() == SignupResultCode.UsernameExistsError) {
         var result = await showDialog<bool>(
           context: context,
           barrierDismissible: false,
@@ -91,7 +96,8 @@ class LoginScreen extends StatelessWidget {
           return "";
         }
       }
-      return ErrorMessageService.extractFromError(error.toString());
+
+      return result.getDescription();
     });
   }
 

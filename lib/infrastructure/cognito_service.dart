@@ -2,7 +2,103 @@ import 'package:amazon_cognito_identity_dart/cognito.dart';
 import 'package:injectable/injectable.dart';
 import 'dart:async';
 
-import '../config/config.dart';
+import 'package:glossaryapp/config/config.dart';
+
+class CognitoErrorMessageService {
+  static String extractFromError(String original) {
+    final exp = RegExp(r'message: ([^}]*)');
+    var list =
+    exp?.allMatches(original).map((match) => match.group(1)).toList();
+    if (list.length == 1) {
+      return list[0];
+    }
+    return "unknown error";
+  }
+}
+enum SignupResultCode {
+  Success,
+  UsernameExistsError,
+  UnknownError
+}
+
+class SignupResult {
+  SignupResultCode _code;
+  String _description;
+
+  SignupResult(this._code, this._description);
+
+  SignupResult.Exception(Exception exception) {
+    _code = buildCode(exception);
+    _description =
+        CognitoErrorMessageService.extractFromError(exception.toString());
+  }
+
+  factory SignupResult.Success() {
+    return SignupResult(SignupResultCode.Success, "success");
+  }
+
+  SignupResultCode buildCode(Exception exception) {
+    if (exception is CognitoClientException &&
+        exception.code == "UsernameExistsException") {
+      return SignupResultCode.UsernameExistsError;
+    }
+    return SignupResultCode.UnknownError;
+  }
+
+  SignupResultCode getCode() {
+    return _code;
+  }
+
+  String getDescription() {
+    return _description;
+  }
+
+  bool isSuccess() {
+    return _code == SignupResultCode.Success;
+  }
+}
+
+enum LoginResultCode {
+  Success,
+  NotConfirmedError,
+  UnknownError
+}
+
+class LoginResult {
+  LoginResultCode _code;
+  String _description;
+
+  LoginResult(this._code, this._description);
+
+  LoginResult.Exception(Exception exception) {
+    _code = buildCode(exception);
+    _description =
+        CognitoErrorMessageService.extractFromError(exception.toString());
+  }
+
+  factory LoginResult.Success() {
+    return LoginResult(LoginResultCode.Success, "success");
+  }
+
+  LoginResultCode buildCode(Exception exception) {
+    if (exception is CognitoUserConfirmationNecessaryException){
+      return LoginResultCode.NotConfirmedError;
+    }
+    return LoginResultCode.UnknownError;
+  }
+
+  LoginResultCode getCode() {
+    return _code;
+  }
+
+  String getDescription() {
+    return _description;
+  }
+
+  bool isSuccess() {
+    return _code == SignupResultCode.Success;
+  }
+}
 
 @injectable
 class CognitoService {
@@ -15,17 +111,21 @@ class CognitoService {
     return "test1";
   }
 
-  static Future<bool> signup(String name, String email, String password) async {
+  static Future<SignupResult> signup(String name, String email, String password) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
     final userAttributes = [
       new AttributeArg(name: 'name', value: name),
       new AttributeArg(name: 'email', value: email),
     ];
 
-    await userPool.signUp(email, password,
-        userAttributes: userAttributes);
+    try {
+      await userPool.signUp(email, password,
+          userAttributes: userAttributes);
+    } catch (e) {
+      return SignupResult.Exception(e);
+    }
 
-    return true;
+    return SignupResult.Success();
   }
 
   static Future<bool> check_verification_code(String email, String code) async {
@@ -71,19 +171,19 @@ class CognitoService {
     return attributes;
   }
 
-  static Future<bool> login(String name, String password) async {
+  static Future<LoginResult> login(String name, String password) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
     final cognitoUser = new CognitoUser(
         name, userPool);
     final authDetails = new AuthenticationDetails(
         username: name, password: password);
 
-    CognitoUserSession session;
+    try {
+      CognitoUserSession session = await cognitoUser.authenticateUser(authDetails);
+    } catch (e) {
+      return LoginResult.Exception(e);
+    }
 
-    session = await cognitoUser.authenticateUser(authDetails);
-
-    print(session.getAccessToken().getJwtToken());
-
-    return true;
+    return LoginResult.Success();
   }
 }

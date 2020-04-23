@@ -5,10 +5,10 @@ import '../infrastructure/cognito_service.dart';
 abstract class LoginUser {
   String email;
 
-  Future<bool> signup(String email, String password);
+  Future<SignupResult> signup(String email, String password);
   Future<bool> check_verification_code(String code);
   Future<bool> resendVerificationCode();
-  Future<bool> login(String email, String password);
+  Future<LoginResult> login(String email, String password);
   Future<bool> isConfirmed();
 }
 
@@ -23,7 +23,7 @@ enum LoginUserStatus {
 @injectable
 class LoginUserImpl extends LoginUser {
 
-  Future<bool> signup(String email, String password) async {
+  Future<SignupResult> signup(String email, String password) async {
     this.email = email;
     return await CognitoService.signup(email, email, password);
   }
@@ -40,7 +40,7 @@ class LoginUserImpl extends LoginUser {
     return await CognitoService.isConfirmed(this.email);
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<LoginResult> login(String email, String password) async {
     this.email = email;
     return await CognitoService.login(email, password);
   }
