@@ -74,7 +74,7 @@ class CognitoService {
   static Future<bool> login(String name, String password) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
     final cognitoUser = new CognitoUser(
-        'email@inspire.my', userPool);
+        name, userPool);
     final authDetails = new AuthenticationDetails(
         username: name, password: password);
 
