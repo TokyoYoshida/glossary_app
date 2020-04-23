@@ -48,19 +48,18 @@ class LoginScreen extends StatelessWidget {
   LoginScreen(this.signupService, this.loginService);
 
   Duration get loginTime => Duration(milliseconds: 2250);
-  var authMode = 0;
+  bool needConfirm = false;
 
   Future<String> _authUser(LoginData data) {
     print('Name: ${data.name}, Password: ${data.password}');
     print(signupService);
     return loginService.login(data.name, data.password).then((result) {
       if (result.isSuccess()) {
-        authMode = 2;
         return "";
       }
 
       if (result.getCode() == LoginResultCode.NotConfirmedError) {
-        authMode = 1;
+        needConfirm = true;
         return "";
       }
 
@@ -72,7 +71,7 @@ class LoginScreen extends StatelessWidget {
     print('Name: ${data.name}, Password: ${data.password}');
     return signupService.signup(data.name, data.password).then((result) async {
       if (result.isSuccess()) {
-        authMode = 1;
+        needConfirm = true;
         return "";
       }
 
@@ -127,7 +126,7 @@ class LoginScreen extends StatelessWidget {
           return _signupUser(loginData, context);
         },
         onSubmitAnimationCompleted: () async {
-          if (authMode == 1) {
+          if (needConfirm) {
             Navigator.of(context).pushNamed('/checkVerificationCode');
           }
           Navigator.of(context).pushNamed('/home');
