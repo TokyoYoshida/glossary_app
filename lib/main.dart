@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'domain/domain.dart';
-import 'infrastructure/cognito_service.dart';
-import 'view/login.dart';
+import 'package:glossaryapp/view/login.dart';
+import 'package:glossaryapp/view/check_verification_code.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -44,7 +43,6 @@ class MyApp extends StatelessWidget {
       '/home': (BuildContext context) => new MyCenter(),
       '/test': (BuildContext context) => my_signup,
       '/login': (BuildContext context) => login,
-      '/afterlogin': (BuildContext context) => new MyAuthTest(),
       '/checkVerificationCode': (BuildContext context) => my_signup
     });
   }
@@ -90,17 +88,6 @@ class MyTop extends StatelessWidget {
         ));
   }
 }
-
-class MyAuthTest extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-        body: Text(CognitoService.test())
-    );
-  }
-}
-
 
 class MyCenter extends StatelessWidget {
   // This widget is the root of your application.

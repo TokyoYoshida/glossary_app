@@ -11,6 +11,7 @@ import 'package:glossaryapp/main.dart';
 import 'package:glossaryapp/application/signup_service.dart';
 import 'package:glossaryapp/application/login_service.dart';
 import 'package:glossaryapp/view/login.dart';
+import 'package:glossaryapp/view/check_verification_code.dart';
 import 'package:get_it/get_it.dart';
 
 void $initGetIt(GetIt g, {String environment}) {
