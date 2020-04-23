@@ -4,15 +4,12 @@ import 'dart:async';
 
 import 'package:glossaryapp/config/config.dart';
 
-class CognitoErrorMessageService {
-  static String extractFromError(String original) {
-    final exp = RegExp(r'message: ([^}]*)');
-    var list =
-    exp?.allMatches(original).map((match) => match.group(1)).toList();
-    if (list.length == 1) {
-      return list[0];
+class CognitoExceptionDescriptionService {
+  static String get(Exception exception) {
+    if(exception is CognitoClientException) {
+      return (exception as CognitoClientException).message;
     }
-    return "unknown error";
+    return exception.toString();
   }
 }
 enum SignupResultCode {
@@ -30,7 +27,7 @@ class SignupResult {
   SignupResult.Exception(Exception exception) {
     _code = buildCode(exception);
     _description =
-        CognitoErrorMessageService.extractFromError(exception.toString());
+        CognitoExceptionDescriptionService.get(exception);
   }
 
   factory SignupResult.Success() {
@@ -73,7 +70,7 @@ class LoginResult {
   LoginResult.Exception(Exception exception) {
     _code = buildCode(exception);
     _description =
-        CognitoErrorMessageService.extractFromError(exception.toString());
+        CognitoExceptionDescriptionService.get(exception);
   }
 
   factory LoginResult.Success() {
