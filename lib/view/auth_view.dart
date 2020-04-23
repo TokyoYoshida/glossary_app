@@ -59,6 +59,11 @@ class LoginScreen extends StatelessWidget {
         return "";
       }
 
+      if (result.getCode() == LoginResultCode.NotConfirmedError) {
+        authMode = 1;
+        return "";
+      }
+
       return result.getDescription();
     });
   }
@@ -67,7 +72,7 @@ class LoginScreen extends StatelessWidget {
     print('Name: ${data.name}, Password: ${data.password}');
     return signupService.signup(data.name, data.password).then((result) async {
       if (result.isSuccess()) {
-        authMode = 2;
+        authMode = 1;
         return "";
       }
 
@@ -122,12 +127,10 @@ class LoginScreen extends StatelessWidget {
           return _signupUser(loginData, context);
         },
         onSubmitAnimationCompleted: () async {
-//          bool isConfirmed = await signupService.isConfirmed();
-//          if (isConfirmed){
-//            Navigator.of(context).pushNamed('/afterlogin');
-//            return;
-//          }
-          Navigator.of(context).pushNamed('/checkVerificationCode');
+          if (authMode == 1) {
+            Navigator.of(context).pushNamed('/checkVerificationCode');
+          }
+          Navigator.of(context).pushNamed('/home');
         },
         onRecoverPassword: _recoverPassword,
       );

@@ -42,6 +42,7 @@ class LoginUserImpl extends LoginUser {
 
   Future<LoginResult> login(String email, String password) async {
     this.email = email;
+
     return await CognitoService.login(email, password);
   }
 }
