@@ -1,6 +1,32 @@
 import 'package:injectable/injectable.dart';
 
-import '../infrastructure/cognito_service.dart';
+import 'package:glossaryapp/infrastructure/cognito_service.dart';
+
+enum SignupResultCode {
+  Success,
+  UsernameExistsError,
+  UnknownError
+}
+
+abstract class SignupResult {
+  SignupResultCode getCode();
+  String getDescription();
+  bool isSuccess();
+}
+
+enum LoginResultCode {
+  Success,
+  NotConfirmedError,
+  UnknownError
+}
+
+abstract class LoginResult {
+  LoginResultCode getCode();
+
+  String getDescription();
+
+  bool isSuccess();
+}
 
 abstract class LoginUser {
   String email;

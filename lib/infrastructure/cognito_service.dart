@@ -1,4 +1,5 @@
 import 'package:amazon_cognito_identity_dart/cognito.dart';
+import 'package:glossaryapp/domain/login_user.dart';
 import 'package:injectable/injectable.dart';
 import 'dart:async';
 
@@ -12,26 +13,21 @@ class CognitoExceptionDescriptionService {
     return exception.toString();
   }
 }
-enum SignupResultCode {
-  Success,
-  UsernameExistsError,
-  UnknownError
-}
 
-class SignupResult {
+class CognitoSignupResult implements SignupResult {
   SignupResultCode _code;
   String _description;
 
-  SignupResult(this._code, this._description);
+  CognitoSignupResult(this._code, this._description);
 
-  SignupResult.Exception(Exception exception) {
+  CognitoSignupResult.Exception(Exception exception) {
     _code = buildCode(exception);
     _description =
         CognitoExceptionDescriptionService.get(exception);
   }
 
-  factory SignupResult.Success() {
-    return SignupResult(SignupResultCode.Success, "success");
+  factory CognitoSignupResult.Success() {
+    return CognitoSignupResult(SignupResultCode.Success, "success");
   }
 
   SignupResultCode buildCode(Exception exception) {
@@ -55,26 +51,20 @@ class SignupResult {
   }
 }
 
-enum LoginResultCode {
-  Success,
-  NotConfirmedError,
-  UnknownError
-}
-
-class LoginResult {
+class CognitoLoginResult implements LoginResult {
   LoginResultCode _code;
   String _description;
 
-  LoginResult(this._code, this._description);
+  CognitoLoginResult(this._code, this._description);
 
-  LoginResult.Exception(Exception exception) {
+  CognitoLoginResult.Exception(Exception exception) {
     _code = buildCode(exception);
     _description =
         CognitoExceptionDescriptionService.get(exception);
   }
 
-  factory LoginResult.Success() {
-    return LoginResult(LoginResultCode.Success, "success");
+  factory CognitoLoginResult.Success() {
+    return CognitoLoginResult(LoginResultCode.Success, "success");
   }
 
   LoginResultCode buildCode(Exception exception) {
@@ -108,7 +98,7 @@ class CognitoService {
     return "test1";
   }
 
-  static Future<SignupResult> signup(String name, String email, String password) async {
+  static Future<CognitoSignupResult> signup(String name, String email, String password) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
     final userAttributes = [
       new AttributeArg(name: 'name', value: name),
@@ -119,10 +109,10 @@ class CognitoService {
       await userPool.signUp(email, password,
           userAttributes: userAttributes);
     } catch (e) {
-      return SignupResult.Exception(e);
+      return CognitoSignupResult.Exception(e);
     }
 
-    return SignupResult.Success();
+    return CognitoSignupResult.Success();
   }
 
   static Future<bool> check_verification_code(String email, String code) async {
@@ -168,7 +158,7 @@ class CognitoService {
     return attributes;
   }
 
-  static Future<LoginResult> login(String name, String password) async {
+  static Future<CognitoLoginResult> login(String name, String password) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
     final cognitoUser = new CognitoUser(
         name, userPool);
@@ -178,9 +168,9 @@ class CognitoService {
     try {
       CognitoUserSession session = await cognitoUser.authenticateUser(authDetails);
     } catch (e) {
-      return LoginResult.Exception(e);
+      return CognitoLoginResult.Exception(e);
     }
 
-    return LoginResult.Success();
+    return CognitoLoginResult.Success();
   }
 }

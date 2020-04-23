@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:injectable/injectable.dart';
 import 'package:glossaryapp/domain/login_user.dart';
-import 'package:glossaryapp/infrastructure/cognito_service.dart';
 
 abstract class SignupService {
   Future<SignupResult> signup(String email, String password);

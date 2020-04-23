@@ -3,10 +3,10 @@ import 'package:injectable/injectable.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
 
+import 'package:glossaryapp/domain/login_user.dart';
 import 'package:glossaryapp/application/error_message_service.dart';
 import 'package:glossaryapp/application/signup_service.dart';
 import 'package:glossaryapp/application/login_service.dart';
-import 'package:glossaryapp/infrastructure/cognito_service.dart';
 
 import 'package:flutter_login/flutter_login.dart';
 import 'dart:async';
