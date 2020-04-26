@@ -2,30 +2,24 @@ import 'package:injectable/injectable.dart';
 
 import 'package:glossaryapp/infrastructure/cognito_service.dart';
 
-enum SignupResultCode {
-  Success,
-  UsernameExistsError,
-  UnknownError
-}
-
-abstract class SignupResult {
-  SignupResultCode getCode();
+abstract class Result {
   String getDescription();
   bool isSuccess();
+  bool isFailure() {
+    return isSuccess();
+  }
 }
 
-enum LoginResultCode {
-  Success,
-  NotConfirmedError,
-  UnknownError
-}
-
-abstract class LoginResult {
-  LoginResultCode getCode();
-
+abstract class SignupResult extends Result {
   String getDescription();
-
   bool isSuccess();
+  bool isUserNameExistsError();
+}
+
+abstract class LoginResult  extends Result {
+  String getDescription();
+  bool isSuccess();
+  bool isNotConfirmedError();
 }
 
 abstract class LoginUser {
@@ -36,12 +30,6 @@ abstract class LoginUser {
   Future<bool> resendVerificationCode();
   Future<LoginResult> login(String email, String password);
   Future<bool> isConfirmed();
-}
-
-enum LoginUserStatus {
-  UnSignup,
-  UnConfirm,
-  LoggedIn
 }
 
 @RegisterAs(LoginUser)

@@ -14,32 +14,30 @@ class CognitoExceptionDescriptionService {
   }
 }
 
-class CognitoSignupResult implements SignupResult {
-  SignupResultCode _code;
+class CognitoResult extends Result {
+  static const String codeSuccess = "success";
+  static const String descriptionSuccess = "success";
+  String _code;
   String _description;
 
-  CognitoSignupResult(this._code, this._description);
+  CognitoResult(this._code, this._description);
 
-  CognitoSignupResult.Exception(Exception exception) {
+  CognitoResult.Exception(Exception exception) {
     _code = buildCode(exception);
     _description =
         CognitoExceptionDescriptionService.get(exception);
   }
 
-  factory CognitoSignupResult.Success() {
-    return CognitoSignupResult(SignupResultCode.Success, "success");
+  CognitoResult.Success() {
+    _code = codeSuccess;
+    _description = descriptionSuccess;
   }
 
-  SignupResultCode buildCode(Exception exception) {
-    if (exception is CognitoClientException &&
-        exception.code == "UsernameExistsException") {
-      return SignupResultCode.UsernameExistsError;
+  String buildCode(Exception exception) {
+    if (exception is CognitoClientException) {
+      return exception.code;
     }
-    return SignupResultCode.UnknownError;
-  }
-
-  SignupResultCode getCode() {
-    return _code;
+    return null;
   }
 
   String getDescription() {
@@ -47,43 +45,27 @@ class CognitoSignupResult implements SignupResult {
   }
 
   bool isSuccess() {
-    return _code == SignupResultCode.Success;
+    return _code == codeSuccess;
   }
 }
 
-class CognitoLoginResult implements LoginResult {
-  LoginResultCode _code;
-  String _description;
+class CognitoSignupResult extends CognitoResult implements SignupResult {
+  CognitoSignupResult(code, description) : super(code ,description);
+  CognitoSignupResult.Exception(exception) : super.Exception(exception);
+  CognitoSignupResult.Success() : super.Success();
 
-  CognitoLoginResult(this._code, this._description);
-
-  CognitoLoginResult.Exception(Exception exception) {
-    _code = buildCode(exception);
-    _description =
-        CognitoExceptionDescriptionService.get(exception);
+  bool isUserNameExistsError() {
+    return _code == "UsernameExistsException";
   }
+}
 
-  factory CognitoLoginResult.Success() {
-    return CognitoLoginResult(LoginResultCode.Success, "success");
-  }
+class CognitoLoginResult extends CognitoResult implements LoginResult {
+  CognitoLoginResult(code, description) : super(code ,description);
+  CognitoLoginResult.Exception(exception) : super.Exception(exception);
+  CognitoLoginResult.Success() : super.Success();
 
-  LoginResultCode buildCode(Exception exception) {
-    if (exception is CognitoClientException && exception.code == "UserNotConfirmedException") {
-      return LoginResultCode.NotConfirmedError;
-    }
-    return LoginResultCode.UnknownError;
-  }
-
-  LoginResultCode getCode() {
-    return _code;
-  }
-
-  String getDescription() {
-    return _description;
-  }
-
-  bool isSuccess() {
-    return _code == LoginResultCode.Success;
+  bool isNotConfirmedError() {
+    return _code == "UserNotConfirmedException";
   }
 }
 

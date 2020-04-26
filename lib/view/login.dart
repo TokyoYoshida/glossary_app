@@ -32,7 +32,7 @@ class LoginScreen extends StatelessWidget {
         return "";
       }
 
-      if (result.getCode() == LoginResultCode.NotConfirmedError) {
+      if (result.isNotConfirmedError()) {
         needConfirm = true;
         return "";
       }
@@ -49,7 +49,7 @@ class LoginScreen extends StatelessWidget {
         return "";
       }
 
-      if (result.getCode() == SignupResultCode.UsernameExistsError) {
+      if (result.isUserNameExistsError()) {
         var result = await showDialog<bool>(
           context: context,
           barrierDismissible: false,

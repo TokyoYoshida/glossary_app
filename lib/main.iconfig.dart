@@ -23,8 +23,10 @@ void $initGetIt(GetIt g, {String environment}) {
   g.registerFactory<LoginService>(() => LoginServiceImpl(g<LoginUser>()));
   g.registerFactory<LoginScreen>(
       () => LoginScreen(g<SignupService>(), g<LoginService>()));
-  g.registerFactory<VerificationUserScreen>(() => VerificationUserScreen(g<SignupService>()));
-  g.registerFactory<VerificationUserScreenState>(() => VerificationUserScreenState(g<SignupService>()));
+  g.registerFactory<VerificationUserScreen>(
+      () => VerificationUserScreen(g<SignupService>()));
+  g.registerFactory<VerificationUserScreenState>(
+      () => VerificationUserScreenState(g<SignupService>()));
   g.registerFactory<MyApp>(() => MyApp(
         g<MyTop>(),
         g<LoginScreen>(),
