@@ -48,7 +48,7 @@ class VerificationUserScreenState extends State<VerificationUserScreen> {
                               if (value.isEmpty) {
                                 return 'Please enter some code';
                               }
-                              return this.validatorResult;
+                              return "";
                             },
                           ),
                           Padding(
@@ -61,15 +61,17 @@ class VerificationUserScreenState extends State<VerificationUserScreen> {
                                     .verificationUser(
                                         verificationCodeTextController.text)
                                     .then((result) {
-                                  Navigator.of(context).pushNamed('/home');
-                                }).catchError((error) {
-                                  var err =
-                                      ErrorMessageService.extractFromError(
-                                          error.toString());
-                                  setState(() {
-                                    print(err);
-                                    this.validatorResult = "失敗しました。";
-                                  });
+                                      if (result.isCodeMismatch()) {
+                                        Scaffold.of(context)
+                                            .showSnackBar(SnackBar(content: Text('verification codeが間違っています。')));
+                                        return;
+                                      }
+                                      if (result.isFailure()) {
+                                        Scaffold.of(context)
+                                            .showSnackBar(SnackBar(content: Text('verification codeの確認に失敗しました。')));
+                                        return;
+                                      }
+                                      Navigator.of(context).pushNamed('/home');
                                 });
                                 if (_formKey.currentState.validate()) {}
                               },

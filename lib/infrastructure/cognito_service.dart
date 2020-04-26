@@ -69,6 +69,16 @@ class CognitoLoginResult extends CognitoResult implements LoginResult {
   }
 }
 
+class CognitoVerificationUserResult extends CognitoResult implements VerificationUserResult {
+  CognitoVerificationUserResult(code, description) : super(code ,description);
+  CognitoVerificationUserResult.Exception(exception) : super.Exception(exception);
+  CognitoVerificationUserResult.Success() : super.Success();
+
+  bool isCodeMismatch() {
+    return _code == "CodeMismatchException";
+  }
+}
+
 @injectable
 class CognitoService {
   static String test() {
@@ -97,7 +107,7 @@ class CognitoService {
     return CognitoSignupResult.Success();
   }
 
-  static Future<CognitoResult> verificationUser(String email, String code) async {
+  static Future<CognitoVerificationUserResult> verificationUser(String email, String code) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
 
     final cognitoUser = new CognitoUser(
@@ -106,10 +116,10 @@ class CognitoService {
     try {
       await cognitoUser.confirmRegistration(code);
     } catch (e) {
-      return CognitoResult.Exception(e);
+      return CognitoVerificationUserResult.Exception(e);
     }
 
-    return CognitoResult.Success();
+    return CognitoVerificationUserResult.Success();
   }
 
   static Future<bool> resendVerificationCode(String email) async {

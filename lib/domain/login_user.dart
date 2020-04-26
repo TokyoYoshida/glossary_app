@@ -6,7 +6,7 @@ abstract class AbstractResult {
   String getDescription();
   bool isSuccess();
   bool isFailure() {
-    return isSuccess();
+    return !isSuccess();
   }
 }
 
@@ -21,11 +21,15 @@ abstract class LoginResult  extends AbstractResult {
   bool isNotConfirmedError();
 }
 
+abstract class VerificationUserResult  extends AbstractResult {
+  bool isCodeMismatch();
+}
+
 abstract class LoginUser {
   String email;
 
   Future<SignupResult> signup(String email, String password);
-  Future<Result> verificationUser(String code);
+  Future<VerificationUserResult> verificationUser(String code);
   Future<bool> resendVerificationCode();
   Future<LoginResult> login(String email, String password);
   Future<bool> isConfirmed();
@@ -41,7 +45,7 @@ class LoginUserImpl extends LoginUser {
     return await CognitoService.signup(email, email, password);
   }
 
-  Future<Result> verificationUser(String code) async {
+  Future<VerificationUserResult> verificationUser(String code) async {
     return await CognitoService.verificationUser(this.email, code);
   }
 
