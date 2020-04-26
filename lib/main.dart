@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:glossaryapp/view/login.dart';
-import 'package:glossaryapp/view/check_verification_code.dart';
+import 'package:glossaryapp/view/verification_user.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';

@@ -58,7 +58,7 @@ class VerificationUserScreenState extends State<VerificationUserScreen> {
                                 // Validate will return true if the form is valid, or false if
                                 // the form is invalid.
                                 signup_service
-                                    .check_verification_code(
+                                    .verificationUser(
                                         verificationCodeTextController.text)
                                     .then((result) {
                                   Navigator.of(context).pushNamed('/home');

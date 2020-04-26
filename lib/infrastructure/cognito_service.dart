@@ -97,7 +97,7 @@ class CognitoService {
     return CognitoSignupResult.Success();
   }
 
-  static Future<CognitoResult> check_verification_code(String email, String code) async {
+  static Future<CognitoResult> verificationUser(String email, String code) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
 
     final cognitoUser = new CognitoUser(
