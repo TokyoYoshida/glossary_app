@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       '/home': (BuildContext context) => new MyCenter(),
       '/test': (BuildContext context) => my_signup,
       '/login': (BuildContext context) => login,
-      '/checkVerificationCode': (BuildContext context) => my_signup
+      '/verificationUser': (BuildContext context) => my_signup
     });
   }
 }

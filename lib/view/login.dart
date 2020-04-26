@@ -100,7 +100,7 @@ class LoginScreen extends StatelessWidget {
       },
       onSubmitAnimationCompleted: () async {
         if (needConfirm) {
-          Navigator.of(context).pushNamed('/checkVerificationCode');
+          Navigator.of(context).pushNamed('/verificationUser');
           return;
         }
         Navigator.of(context).pushNamed('/home');
