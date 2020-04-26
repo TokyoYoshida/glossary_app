@@ -29,15 +29,20 @@ class VerificationUserScreenState extends State<VerificationUserScreen> {
   Widget build(BuildContext context) {
     return new Scaffold(
         body: Builder(
-            builder: (context) => Form(
-                key: _formKey,
-                child: new Container(
+            builder: (context) => Container(
                     padding: const EdgeInsets.all(30.0),
                     color: Colors.white,
-                    child: new Container(
+                child: new Form(
+                        key: _formKey,
+
                         child: new Center(
+                            child: Container(
+                            child: Card(
+                                child: Container(
+                                  padding: const EdgeInsets.all(30.0),
                       child: new Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           TextFormField(
                             controller: verificationCodeTextController,
@@ -84,7 +89,7 @@ class VerificationUserScreenState extends State<VerificationUserScreen> {
                                   context, signup_service))
                         ],
                       ),
-                    ))))));
+                    ))))))));
   }
 }
 
