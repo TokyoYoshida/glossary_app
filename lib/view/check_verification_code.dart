@@ -7,22 +7,22 @@ import 'package:glossaryapp/application/signup_service.dart';
 final _formKey = GlobalKey<FormState>();
 
 @injectable
-class MySignup extends StatefulWidget {
+class VerificationScreen extends StatefulWidget {
   SignupService signup_service;
 
-  MySignup(this.signup_service);
+  VerificationScreen(this.signup_service);
 
   @override
-  MySignupState createState() => MySignupState(this.signup_service);
+  VerificationScreenState createState() => VerificationScreenState(this.signup_service);
 }
 
 @injectable
-class MySignupState extends State<MySignup> {
+class VerificationScreenState extends State<VerificationScreen> {
   SignupService signup_service;
   final verificationCodeTextController = TextEditingController();
   String validatorResult;
 
-  MySignupState(this.signup_service);
+  VerificationScreenState(this.signup_service);
 
   // This widget is the root of your application.
   @override

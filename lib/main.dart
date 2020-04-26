@@ -34,7 +34,7 @@ void main() {
 class MyApp extends StatelessWidget {
   MyTop my_top;
   LoginScreen login;
-  MySignup my_signup;
+  VerificationScreen my_signup;
 
   MyApp(this.my_top, this.login, this.my_signup);
   @override
