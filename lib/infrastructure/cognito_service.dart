@@ -14,7 +14,7 @@ class CognitoExceptionDescriptionService {
   }
 }
 
-class CognitoResult extends Result {
+class CognitoResult extends AbstractResult implements Result {
   static const String codeSuccess = "success";
   static const String descriptionSuccess = "success";
   String _code;
@@ -97,15 +97,19 @@ class CognitoService {
     return CognitoSignupResult.Success();
   }
 
-  static Future<bool> check_verification_code(String email, String code) async {
+  static Future<CognitoResult> check_verification_code(String email, String code) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
 
     final cognitoUser = new CognitoUser(
         email, userPool);
 
-    await cognitoUser.confirmRegistration(code);
+    try {
+      await cognitoUser.confirmRegistration(code);
+    } catch (e) {
+      return CognitoResult.Exception(e);
+    }
 
-    return true;
+    return CognitoResult.Success();
   }
 
   static Future<bool> resendVerificationCode(String email) async {

@@ -4,7 +4,7 @@ import 'package:glossaryapp/domain/login_user.dart';
 
 abstract class SignupService {
   Future<SignupResult> signup(String email, String password);
-  Future<bool> check_verification_code(String code);
+  Future<AbstractResult> check_verification_code(String code);
   Future<bool> resendVerificationCode();
   Future<bool> isConfirmed();
 }
@@ -19,7 +19,7 @@ class SignupServiceImpl extends SignupService {
     return loginUser.signup(email, password);
   }
 
-  Future<bool> check_verification_code(String code) async {
+  Future<AbstractResult> check_verification_code(String code) async {
     return loginUser.check_verification_code(code);
   }
 
