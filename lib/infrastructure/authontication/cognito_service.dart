@@ -1,5 +1,5 @@
 import 'package:amazon_cognito_identity_dart/cognito.dart';
-import 'package:glossaryapp/domain/login_user.dart';
+import 'package:glossaryapp/domain/model/user.dart';
 import 'package:injectable/injectable.dart';
 import 'dart:async';
 

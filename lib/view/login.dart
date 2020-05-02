@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'dart:async';
 
-import 'package:glossaryapp/domain/login_user.dart';
-import 'package:glossaryapp/application/signup_service.dart';
-import 'package:glossaryapp/application/login_service.dart';
+import 'package:glossaryapp/domain/model/user.dart';
+import 'package:glossaryapp/application/service/signup_service.dart';
+import 'package:glossaryapp/application/service/login_service.dart';
 
 import 'package:flutter_login/flutter_login.dart';
 import 'dart:async';

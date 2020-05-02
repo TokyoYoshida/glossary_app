@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:injectable/injectable.dart';
-import 'package:glossaryapp/domain/login_user.dart';
+import 'package:glossaryapp/domain/model/user.dart';
 
 abstract class LoginService {
   Future<LoginResult> login(String email, String password);
@@ -9,7 +9,7 @@ abstract class LoginService {
 @RegisterAs(LoginService)
 @injectable
 class LoginServiceImpl extends LoginService {
-  LoginUser loginUser;
+  User loginUser;
   LoginServiceImpl(this.loginUser);
 
   Future<LoginResult> login(String email, String password) async {

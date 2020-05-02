@@ -13,16 +13,14 @@ class GlossaryRepository {
   }
 }
 
-abstract class Entity {
+class Word {
   String id;
-}
-
-class Word extends Entity {
   String theWord;
   String description;
   User updateUser;
 }
 
-class User extends Entity{
+class User {
+  String id;
   String nickName;
 }
