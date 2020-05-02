@@ -101,15 +101,6 @@ class CognitoVerificationUserResult extends CognitoResult implements Verificatio
 
 @injectable
 class CognitoService {
-  static String test() {
-    CognitoService.signup(testUserEmail,testUserEmail,testUserPassword)
-    .then((result) {
-      print("success!");
-    });
-    print("authtest");
-    return "test1";
-  }
-
   static Future<CognitoSignupResult> signup(String name, String email, String password) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
     final userAttributes = [

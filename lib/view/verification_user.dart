@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import 'package:glossaryapp/application/service/error_message_service.dart';
 import 'package:glossaryapp/application/service/signup_service.dart';
 
 final _formKey = GlobalKey<FormState>();
