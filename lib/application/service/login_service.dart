@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:injectable/injectable.dart';
 import 'package:glossaryapp/generic_subdomain/model/user.dart';
-import 'package:glossaryapp/application/interface/login_result.dart';
+import 'package:glossaryapp/infrastructure/result/login_result.dart';
 import 'package:glossaryapp/application/repository/login_session_repository.dart';
 import 'package:glossaryapp/application/repository/user_repository.dart';
 import 'package:glossaryapp/infrastructure/authontication/cognito_service.dart';
