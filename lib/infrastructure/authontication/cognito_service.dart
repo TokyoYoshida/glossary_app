@@ -1,9 +1,17 @@
 import 'package:amazon_cognito_identity_dart/cognito.dart';
-import 'package:glossaryapp/domain/model/user.dart';
+import 'package:glossaryapp/generic_subdomain/interface/login_session.dart';
+import 'package:glossaryapp/application/interface/signup_result.dart';
+import 'package:glossaryapp/application/interface/login_result.dart';
+import 'package:glossaryapp/application/interface/result.dart';
 import 'package:injectable/injectable.dart';
 import 'dart:async';
 
 import 'package:glossaryapp/config/config.dart';
+
+
+abstract class VerificationUserResult  extends AbstractResult {
+  bool isCodeMismatch();
+}
 
 class CognitoExceptionDescriptionService {
   static String get(Exception exception) {
@@ -49,23 +57,35 @@ class CognitoResult extends AbstractResult implements Result {
   }
 }
 
-class CognitoSignupResult extends CognitoResult implements SignupResult {
+class CognitoSignupResult extends CognitoResult implements SignupResult, LoginSessionGeneratable {
+  LoginSession session;
+
   CognitoSignupResult(code, description) : super(code ,description);
   CognitoSignupResult.Exception(exception) : super.Exception(exception);
-  CognitoSignupResult.Success() : super.Success();
+  CognitoSignupResult.Success(this.session) : super.Success();
 
   bool isUserNameExistsError() {
     return _code == "UsernameExistsException";
   }
+
+  LoginSession getLoginSession() {
+    return session;
+  }
 }
 
-class CognitoLoginResult extends CognitoResult implements LoginResult {
+class CognitoLoginResult extends CognitoResult implements LoginResult, LoginSessionGeneratable {
+  LoginSession session;
+
   CognitoLoginResult(code, description) : super(code ,description);
   CognitoLoginResult.Exception(exception) : super.Exception(exception);
-  CognitoLoginResult.Success() : super.Success();
+  CognitoLoginResult.Success(this.session) : super.Success();
 
   bool isNotConfirmedError() {
     return _code == "UserNotConfirmedException";
+  }
+
+  LoginSession getLoginSession() {
+    return session;
   }
 }
 
@@ -104,7 +124,7 @@ class CognitoService {
       return CognitoSignupResult.Exception(e);
     }
 
-    return CognitoSignupResult.Success();
+    return CognitoSignupResult.Success(CognitoLoginSession());
   }
 
   static Future<CognitoVerificationUserResult> verificationUser(String email, String code) async {
@@ -167,6 +187,10 @@ class CognitoService {
       return CognitoLoginResult.Exception(e);
     }
 
-    return CognitoLoginResult.Success();
+    return CognitoLoginResult.Success(CognitoLoginSession());
   }
+}
+
+class CognitoLoginSession extends LoginSession {
+
 }

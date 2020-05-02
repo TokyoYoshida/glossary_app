@@ -1,7 +1,14 @@
-import 'package:glossaryapp/domain/model/user.dart';
+import 'package:injectable/injectable.dart';
 
+import 'package:glossaryapp/generic_subdomain/model/user.dart';
+
+@injectable
 class UserRepository {
-  User find(String userId) {
+  User create(String email) {
+    return User(email);
+  }
 
+  User getByEmail(String email) {
+    return User(email);
   }
 }
