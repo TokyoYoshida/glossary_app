@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:injectable/injectable.dart';
-import 'package:glossaryapp/domain/generic_subdomain/model/user.dart';
 import 'package:glossaryapp/infrastructure/result/signup_result.dart';
 import 'package:glossaryapp/application/repository/login_session_repository.dart';
 import 'package:glossaryapp/application/repository/user_repository.dart';

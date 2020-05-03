@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:glossaryapp/view/word_list.dart';
 import 'package:provider/provider.dart';
 
 import 'package:glossaryapp/view/login.dart';
@@ -35,15 +36,17 @@ class MyApp extends StatelessWidget {
   MyTop my_top;
   LoginScreen login;
   VerificationUserScreen my_signup;
+  WordListScreen _wordList;
 
-  MyApp(this.my_top, this.login, this.my_signup);
+  MyApp(this.my_top, this.login, this.my_signup, this._wordList);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(home: my_top, routes: <String, WidgetBuilder>{
       '/home': (BuildContext context) => new MyCenter(),
       '/test': (BuildContext context) => my_signup,
       '/login': (BuildContext context) => login,
-      '/verificationUser': (BuildContext context) => my_signup
+      '/verificationUser': (BuildContext context) => my_signup,
+      '/wordList': (BuildContext context) => _wordList,
     });
   }
 }
@@ -82,6 +85,9 @@ class MyTop extends StatelessWidget {
               RaisedButton(
                   child: Text(sb.test()),
                   onPressed: () => Navigator.of(context).pushNamed('/battery')),
+              RaisedButton(
+                  child: Text('word list'),
+                  onPressed: () => Navigator.of(context).pushNamed('/wordList')),
               Text("test"),
             ],
           ),
