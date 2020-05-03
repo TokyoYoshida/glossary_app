@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'dart:async';
 
-import 'package:glossaryapp/generic_subdomain/model/user.dart';
 import 'package:glossaryapp/application/service/signup_service.dart';
 import 'package:glossaryapp/application/service/login_service.dart';
 
 import 'package:flutter_login/flutter_login.dart';
-import 'dart:async';
 
 const users = const {
   'dribbble@gmail.com': '12345',

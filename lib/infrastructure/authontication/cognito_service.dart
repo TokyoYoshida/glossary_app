@@ -1,5 +1,5 @@
 import 'package:amazon_cognito_identity_dart/cognito.dart';
-import 'package:glossaryapp/generic_subdomain/interface/login_session.dart';
+import 'package:glossaryapp/domain/generic_subdomain/interface/login_session.dart';
 import 'package:glossaryapp/infrastructure/result/signup_result.dart';
 import 'package:glossaryapp/infrastructure/result/login_result.dart';
 import 'package:glossaryapp/infrastructure/result/result.dart';

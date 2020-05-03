@@ -1,4 +1,4 @@
-import 'package:glossaryapp/generic_subdomain/model/user.dart';
+import 'package:glossaryapp/domain/generic_subdomain/model/user.dart';
 
 abstract class LoginSessionGeneratable {
   LoginSession session;
