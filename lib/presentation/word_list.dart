@@ -37,6 +37,7 @@ class WordList extends StatelessWidget {
     return Consumer<WordListViewModel>(
       builder: (context, vm, _) {
         return Scaffold(
+          appBar: AppBar(title: const Text("単語帳")),
           body: DataTable(
             sortAscending: vm.getSort(),
             sortColumnIndex: 0,
@@ -47,6 +48,11 @@ class WordList extends StatelessWidget {
             ],
             rows: vm.getWords().map(
                 (itemRow) => DataRow(
+                  onSelectChanged: (bool value) {
+                    if(value) {
+                      Navigator.of(context).pushNamed('/wordDetail');
+                    }
+                  },
                   cells: [
                     DataCell(
                       Text(itemRow.getId()),

@@ -12,6 +12,7 @@ import 'package:glossaryapp/application/repository/word_repository.dart';
 import 'package:glossaryapp/application/service/glossary_service.dart';
 import 'package:glossaryapp/application/service/login_session_service.dart';
 import 'package:glossaryapp/presentation/word_list.dart';
+import 'package:glossaryapp/presentation/word_detail.dart';
 import 'package:glossaryapp/main.dart';
 import 'package:glossaryapp/application/service/login_service.dart';
 import 'package:glossaryapp/application/service/signup_service.dart';
@@ -31,6 +32,8 @@ void $initGetIt(GetIt g, {String environment}) {
       () => LoginSessionService(g<LoginSessionRepository>()));
   g.registerFactory<WordListViewModel>(() => WordListViewModel());
   g.registerFactory<WordListScreen>(() => WordListScreen());
+  g.registerFactory<WordDetailViewModel>(() => WordDetailViewModel());
+  g.registerFactory<WordDetailScreen>(() => WordDetailScreen());
   g.registerFactory<MyTop>(() => MyTop(g<ServiceB>()));
   g.registerFactory<LoginService>(
       () => LoginServiceImpl(g<UserRepository>(), g<LoginSessionService>()));
@@ -47,6 +50,7 @@ void $initGetIt(GetIt g, {String environment}) {
         g<LoginScreen>(),
         g<VerificationUserScreen>(),
         g<WordListScreen>(),
+        g<WordDetailScreen>(),
       ));
 
   //Eager singletons must be registered in the right order

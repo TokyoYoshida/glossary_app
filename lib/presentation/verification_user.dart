@@ -27,6 +27,7 @@ class VerificationUserScreenState extends State<VerificationUserScreen> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+        appBar: AppBar(title: const Text("認証コードの確認")),
         body: Builder(
             builder: (context) => Container(
                     padding: const EdgeInsets.all(30.0),
