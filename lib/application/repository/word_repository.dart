@@ -2,6 +2,7 @@ import 'package:glossaryapp/domain/core/model/word.dart';
 import 'package:glossaryapp/domain/core/model/words.dart';
 import 'package:injectable/injectable.dart';
 
+@injectable
 class WordRepository {
   Map<String, Word> _words;
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:glossaryapp/view/word_list.dart';
+import 'package:glossaryapp/presentation/word_list.dart';
 import 'package:provider/provider.dart';
 
-import 'package:glossaryapp/view/login.dart';
-import 'package:glossaryapp/view/verification_user.dart';
+import 'package:glossaryapp/presentation/login.dart';
+import 'package:glossaryapp/presentation/verification_user.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
