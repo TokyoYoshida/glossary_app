@@ -8,10 +8,6 @@ import 'package:glossaryapp/test.dart';
 import 'package:glossaryapp/infrastructure/authontication/cognito_service.dart';
 import 'package:glossaryapp/application/repository/login_session_repository.dart';
 import 'package:glossaryapp/application/repository/user_repository.dart';
-import 'package:glossaryapp/application/service/glossary_service.dart';
-import 'package:glossaryapp/application/repository/word_repository.dart';
-import 'package:glossaryapp/view/word_list.dart';
-import 'package:glossaryapp/application/service/login_session_service.dart';
 import 'package:glossaryapp/main.dart';
 import 'package:glossaryapp/application/service/login_service.dart';
 import 'package:glossaryapp/application/service/signup_service.dart';
@@ -24,17 +20,11 @@ void $initGetIt(GetIt g, {String environment}) {
   g.registerFactory<ServiceB>(() => ServiceB(g<ServiceA>()));
   g.registerFactory<CognitoService>(() => CognitoService());
   g.registerFactory<UserRepository>(() => UserRepository());
-  g.registerFactory<GlossaryService>(
-      () => GlossaryService(g<WordRepository>()));
-  g.registerFactory<WordListViewModel>(() => WordListViewModel());
-  g.registerFactory<WordListScreen>(() => WordListScreen());
-  g.registerFactory<LoginSessionService>(
-      () => LoginSessionService(g<LoginSessionRepository>()));
   g.registerFactory<MyTop>(() => MyTop(g<ServiceB>()));
   g.registerFactory<LoginService>(
-      () => LoginServiceImpl(g<UserRepository>(), g<LoginSessionService>()));
-  g.registerFactory<SignupService>(
-      () => SignupServiceImpl(g<UserRepository>(), g<LoginSessionService>()));
+      () => LoginServiceImpl(g<UserRepository>(), g<LoginSessionRepository>()));
+  g.registerFactory<SignupService>(() =>
+      SignupServiceImpl(g<UserRepository>(), g<LoginSessionRepository>()));
   g.registerFactory<LoginScreen>(
       () => LoginScreen(g<SignupService>(), g<LoginService>()));
   g.registerFactory<VerificationUserScreen>(
@@ -45,7 +35,6 @@ void $initGetIt(GetIt g, {String environment}) {
         g<MyTop>(),
         g<LoginScreen>(),
         g<VerificationUserScreen>(),
-        g<WordListScreen>(),
       ));
 
   //Eager singletons must be registered in the right order

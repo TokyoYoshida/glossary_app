@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:glossaryapp/application/service/login_session_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:glossaryapp/infrastructure/result/signup_result.dart';
 import 'package:glossaryapp/application/repository/login_session_repository.dart';
@@ -15,29 +16,32 @@ abstract class SignupService {
 @injectable
 class SignupServiceImpl extends SignupService {
   UserRepository userRepo;
-  LoginSessionRepository sessionRepo;
-  SignupServiceImpl(this.userRepo, this.sessionRepo);
+  LoginSessionService _sessionService;
+  SignupServiceImpl(this.userRepo, this._sessionService);
 
   Future<SignupResult> signup(String email, String password) async {
     var result = await CognitoService.signup(email, email, password);
 
-    var session = result.getLoginSession();
+    var cognitoSession = result.getSession();
     var user = userRepo.create(email);
-    session.setLoginUser(user);
-    sessionRepo.store(session);
+    _sessionService.start(user, cognitoSession);
 
     return result;
   }
 
   Future<VerificationUserResult> verificationUser(String code) async {
-    var session = sessionRepo.get();
-    var user = session.getLoginUser();
+    assert(_sessionService.isAlive());
+
+    var user = _sessionService.getLoginUser();
+
     return await CognitoService.verificationUser(user.getEmail(), code);
   }
 
   Future<bool> resendVerificationCode() async {
-    var session = sessionRepo.get();
-    var user = session.getLoginUser();
+    assert(_sessionService.isAlive());
+
+    var user = _sessionService.getLoginUser();
+
     return await CognitoService.resendVerificationCode(user.getEmail());
   }
 }

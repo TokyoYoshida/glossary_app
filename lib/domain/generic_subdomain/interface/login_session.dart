@@ -1,16 +1,11 @@
 import 'package:glossaryapp/domain/generic_subdomain/model/user.dart';
+import 'package:glossaryapp/infrastructure/authontication/cognito_service.dart';
 
-abstract class LoginSessionGeneratable {
-  LoginSession session;
-  LoginSession getLoginSession();
-}
-
-abstract class LoginSession {
+class LoginSession {
   User _loginUser;
+  CognitoSession _congnitoSession;
 
-  void setLoginUser(User loginUser) {
-    _loginUser = loginUser;
-  }
+  LoginSession(this._loginUser, this._congnitoSession);
 
   User getLoginUser() {
     return _loginUser;

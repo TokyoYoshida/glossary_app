@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'package:glossaryapp/application/service/login_session_service.dart';
 import 'package:injectable/injectable.dart';
-import 'package:glossaryapp/domain/generic_subdomain/model/user.dart';
 import 'package:glossaryapp/infrastructure/result/login_result.dart';
 import 'package:glossaryapp/application/repository/login_session_repository.dart';
 import 'package:glossaryapp/application/repository/user_repository.dart';
@@ -14,16 +14,15 @@ abstract class LoginService {
 @injectable
 class LoginServiceImpl extends LoginService {
   UserRepository userRepo;
-  LoginSessionRepository sessionRepo;
-  LoginServiceImpl(this.userRepo, this.sessionRepo);
+  LoginSessionService _sessionService;
+  LoginServiceImpl(this.userRepo, this._sessionService);
 
   Future<LoginResult> login(String email, String password) async {
     var result = await CognitoService.login(email, password);
 
-    var session = result.getLoginSession();
+    var cognitoSession = result.getSession();
     var user = userRepo.getByEmail(email);
-    session.setLoginUser(user);
-    sessionRepo.store(session);
+    _sessionService.start(user, cognitoSession);
 
     return result;
   }

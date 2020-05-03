@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:glossaryapp/config/config.dart';
 
+class CognitoSession {
+}
 
 abstract class VerificationUserResult  extends AbstractResult {
   bool isCodeMismatch();
@@ -57,35 +59,35 @@ class CognitoResult extends AbstractResult implements Result {
   }
 }
 
-class CognitoSignupResult extends CognitoResult implements SignupResult, LoginSessionGeneratable {
-  LoginSession session;
+class CognitoSignupResult extends CognitoResult implements SignupResult {
+  CognitoSession _session;
 
   CognitoSignupResult(code, description) : super(code ,description);
   CognitoSignupResult.Exception(exception) : super.Exception(exception);
-  CognitoSignupResult.Success(this.session) : super.Success();
+  CognitoSignupResult.Success(this._session) : super.Success();
 
   bool isUserNameExistsError() {
     return _code == "UsernameExistsException";
   }
 
-  LoginSession getLoginSession() {
-    return session;
+  CognitoSession getSession() {
+    return _session;
   }
 }
 
-class CognitoLoginResult extends CognitoResult implements LoginResult, LoginSessionGeneratable {
-  LoginSession session;
+class CognitoLoginResult extends CognitoResult implements LoginResult {
+  CognitoSession _session;
 
   CognitoLoginResult(code, description) : super(code ,description);
   CognitoLoginResult.Exception(exception) : super.Exception(exception);
-  CognitoLoginResult.Success(this.session) : super.Success();
+  CognitoLoginResult.Success(this._session) : super.Success();
 
   bool isNotConfirmedError() {
     return _code == "UserNotConfirmedException";
   }
 
-  LoginSession getLoginSession() {
-    return session;
+  CognitoSession getSession() {
+    return _session;
   }
 }
 
@@ -115,7 +117,7 @@ class CognitoService {
       return CognitoSignupResult.Exception(e);
     }
 
-    return CognitoSignupResult.Success(CognitoLoginSession());
+    return CognitoSignupResult.Success(CognitoSession());
   }
 
   static Future<CognitoVerificationUserResult> verificationUser(String email, String code) async {
@@ -178,10 +180,7 @@ class CognitoService {
       return CognitoLoginResult.Exception(e);
     }
 
-    return CognitoLoginResult.Success(CognitoLoginSession());
+    return CognitoLoginResult.Success(CognitoSession());
   }
 }
 
-class CognitoLoginSession extends LoginSession {
-
-}
