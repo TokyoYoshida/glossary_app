@@ -8,37 +8,37 @@ import 'package:provider/provider.dart';
 @injectable
 class WordListViewModel with ChangeNotifier {
   WordService _wordService;
-  Words _words;
+  Words _wordsCache;
+
+  Words get _words {
+    if(_wordsCache == null) {
+      _wordsCache = _wordService.getAll();
+    }
+    return _wordsCache;
+  }
 
   WordListViewModel(this._wordService);
 
   bool _sort = false;
 
   int itemCount() {
-    return _getWords().getCount();
+    return _words.getCount();
   }
 
   String getTheWord(int index) {
-    return _getWords().get(index).getTheWord();
+    return _words.get(index).getTheWord();
   }
 
   String getPronunciation(int index) {
-    return _getWords().get(index).getPronunciation();
+    return _words.get(index).getPronunciation();
   }
 
   String getMeaning(int index) {
-    return _getWords().get(index).getMeaning();
+    return _words.get(index).getMeaning();
   }
 
   bool getSort() {
     return _sort;
-  }
-
-  Words _getWords() {
-    if(_words == null) {
-      _words = _wordService.getAll();
-    }
-    return _words;
   }
 }
 
