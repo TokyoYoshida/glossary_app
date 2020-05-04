@@ -7,12 +7,25 @@ import 'package:provider/provider.dart';
 
 @injectable
 class WordListViewModel with ChangeNotifier {
-  Words _words = Words(
-      [Word("1", "test", "てすと", "meaning", User("test@test.jp"), DateTime.now())]);
+  List<Word> _words = [
+    Word("1", "test", "てすと", "meaning", User("test@test.jp"), DateTime.now())
+  ];
   bool _sort = false;
 
-  List<Word> getWords() {
-    return _words.getAll();
+  int itemCount() {
+    return _words.length;
+  }
+
+  String getTheWord(int index) {
+    return _words[index].getTheWord();
+  }
+
+  String getPronunciation(int index) {
+    return _words[index].getPronunciation();
+  }
+
+  String getMeaning(int index) {
+    return _words[index].getMeaning();
   }
 
   bool getSort() {
@@ -38,35 +51,36 @@ class WordList extends StatelessWidget {
       builder: (context, vm, _) {
         return Scaffold(
             appBar: AppBar(title: const Text("単語帳")),
-            body: DataTable(
-                sortAscending: vm.getSort(),
-                sortColumnIndex: 0,
-                columns: [
-                  const DataColumn(label: Text("単語")),
-                  const DataColumn(label: Text("読み方")),
-                  const DataColumn(label: Text("意味")),
-                ],
-                rows: vm
-                    .getWords()
-                    .map((itemRow) => DataRow(
-                          onSelectChanged: (bool value) {
-                            if (value) {
-                              Navigator.of(context).pushNamed('/wordDetail');
-                            }
-                          },
-                          cells: [
-                            DataCell(
-                              Text(itemRow.getTheWord()),
-                            ),
-                            DataCell(
-                              Text(itemRow.getPronunciation()),
-                            ),
-                            DataCell(
-                              Text(itemRow.getMeaning()),
-                            ),
-                          ],
-                        ))
-                    .toList()));
+            body: ListView.builder(
+                itemCount: vm.itemCount(),
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/wordDetail');
+                      },
+                      child: Card(
+                        elevation: 4.0,
+                        margin: const EdgeInsets.all(16),
+                        child: Padding(
+                            padding: EdgeInsets.all(20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                ListTile(
+                                  title: Text(
+                                    vm.getTheWord(index),
+                                    style: TextStyle(fontSize: 22.0),
+                                  ),
+                                  leading: Icon(Icons.subject),
+                                  subtitle: Text(vm.getPronunciation(index)),
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.only(left: 73.0),
+                                    child: Text(vm.getMeaning(index)))
+                              ],
+                            )),
+                      ));
+                }));
       },
     );
   }
