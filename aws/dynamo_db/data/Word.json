@@ -1,0 +1,28 @@
+{
+    "WordTable": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "id": {
+                        "S": "1"
+                    },
+                    "theWord": {
+                        "S": "test word"
+                    },
+                    "pronunciation": {
+                        "S": "test pronunciation"
+                    },
+                    "meaning": {
+                        "S": "test meaning"
+                    },
+                    "updateUserId": {
+                        "S": "1"
+                    },
+                    "updateTime": {
+                        "S": "2020-05-04T22:29:10.514Z"
+                    }
+                }
+            }
+        }
+   ]
+}
