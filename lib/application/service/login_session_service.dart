@@ -1,6 +1,6 @@
 import 'package:glossaryapp/application/repository/login_session_repository.dart';
 import 'package:glossaryapp/domain/generic_subdomain/model/user.dart';
-import 'package:glossaryapp/infrastructure/authontication/cognito_service.dart';
+import 'package:glossaryapp/infrastructure/authontication/cognito_auth_service.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable

@@ -101,9 +101,10 @@ class CognitoVerificationUserResult extends CognitoResult implements Verificatio
   }
 }
 
+@singleton
 @injectable
-class CognitoService {
-  static Future<CognitoSignupResult> signup(String name, String email, String password) async {
+class CognitoAuthService {
+  Future<CognitoSignupResult> signup(String name, String email, String password) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
     final userAttributes = [
       new AttributeArg(name: 'name', value: name),
@@ -120,7 +121,7 @@ class CognitoService {
     return CognitoSignupResult.Success(CognitoSession());
   }
 
-  static Future<CognitoVerificationUserResult> verificationUser(String email, String code) async {
+  Future<CognitoVerificationUserResult> verificationUser(String email, String code) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
 
     final cognitoUser = new CognitoUser(
@@ -135,7 +136,7 @@ class CognitoService {
     return CognitoVerificationUserResult.Success();
   }
 
-  static Future<bool> resendVerificationCode(String email) async {
+  Future<bool> resendVerificationCode(String email) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
 
     final cognitoUser = new CognitoUser(
@@ -149,12 +150,7 @@ class CognitoService {
     return true;
   }
 
-  static Future<bool> isConfirmed(String email) async {
-    List<CognitoUserAttribute> attr = await CognitoService.getUserInfo(email);
-    return true;
-  }
-
-  static Future<List<CognitoUserAttribute>> getUserInfo(String email) async {
+  Future<List<CognitoUserAttribute>> getUserInfo(String email) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
 
     final cognitoUser = new CognitoUser(
@@ -167,7 +163,7 @@ class CognitoService {
     return attributes;
   }
 
-  static Future<CognitoLoginResult> login(String name, String password) async {
+  Future<CognitoLoginResult> login(String name, String password) async {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
     final cognitoUser = new CognitoUser(
         name, userPool);

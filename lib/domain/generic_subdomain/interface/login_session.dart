@@ -1,5 +1,5 @@
 import 'package:glossaryapp/domain/generic_subdomain/model/user.dart';
-import 'package:glossaryapp/infrastructure/authontication/cognito_service.dart';
+import 'package:glossaryapp/infrastructure/authontication/cognito_auth_service.dart';
 
 class LoginSession {
   User _loginUser;
