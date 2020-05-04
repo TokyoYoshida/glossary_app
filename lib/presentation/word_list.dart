@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:glossaryapp/domain/generic_subdomain/model/user.dart';
+import 'package:glossaryapp/application/service/word_service.dart';
 import 'package:glossaryapp/domain/core/model/word.dart';
 import 'package:glossaryapp/domain/core/model/words.dart';
 import 'package:injectable/injectable.dart';
@@ -7,25 +7,29 @@ import 'package:provider/provider.dart';
 
 @injectable
 class WordListViewModel with ChangeNotifier {
-  List<Word> _words = [
-    Word("1", "test", "てすと", "meaning", User("test@test.jp"), DateTime.now())
-  ];
+  WordService _wordService;
+  Words _words;
+
+  WordListViewModel(this._wordService) {
+    _words = _wordService.getAll();
+  }
+
   bool _sort = false;
 
   int itemCount() {
-    return _words.length;
+    return _words.getCount();
   }
 
   String getTheWord(int index) {
-    return _words[index].getTheWord();
+    return _words.get(index).getTheWord();
   }
 
   String getPronunciation(int index) {
-    return _words[index].getPronunciation();
+    return _words.get(index).getPronunciation();
   }
 
   String getMeaning(int index) {
-    return _words[index].getMeaning();
+    return _words.get(index).getMeaning();
   }
 
   bool getSort() {
@@ -35,12 +39,15 @@ class WordListViewModel with ChangeNotifier {
 
 @injectable
 class WordListScreen extends StatelessWidget {
+  WordListViewModel _vm;
+
+  WordListScreen(this._vm);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         body: ChangeNotifierProvider(
-            create: (context) => WordListViewModel(), child: WordList()));
+            create: (context) => _vm, child: WordList()));
   }
 }
 

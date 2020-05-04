@@ -5,7 +5,15 @@ class Words {
 
   Words(this._words);
 
+  int getCount() {
+    return _words.length;
+  }
+
   List<Word> getAll() {
-    return _words;
+    return List.unmodifiable(_words);
+  }
+
+  Word get(int index) {
+    return _words[index];
   }
 }
