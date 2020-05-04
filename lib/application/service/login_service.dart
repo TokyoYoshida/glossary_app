@@ -21,9 +21,9 @@ class LoginServiceImpl extends LoginService {
   Future<LoginResult> login(String email, String password) async {
     var result = await _authService.login(email, password);
 
-    var cognitoSession = result.getSession();
+    var supplier = result.getSessionSupplier();
     var user = userRepo.getByEmail(email);
-    _sessionService.start(user, cognitoSession);
+    _sessionService.start(user, supplier);
 
     return result;
   }

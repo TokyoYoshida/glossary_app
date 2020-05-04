@@ -23,10 +23,6 @@ class SignupServiceImpl extends SignupService {
   Future<SignupResult> signup(String email, String password) async {
     var result = await _authService.signup(email, email, password);
 
-    var cognitoSession = result.getSession();
-    var user = userRepo.create(email);
-    _sessionService.start(user, cognitoSession);
-
     return result;
   }
 

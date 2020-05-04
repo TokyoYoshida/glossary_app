@@ -41,8 +41,8 @@ void $initGetIt(GetIt g, {String environment}) {
         g<CognitoAuthService>(),
         g<LoginSessionService>(),
       ));
-  g.registerFactory<WordRepository>(
-      () => WordRepository(g<CognitoWordDataSourceService>()));
+  g.registerFactory<WordRepository>(() => WordRepository(
+      g<CognitoWordDataSourceService>(), g<LoginSessionService>()));
   g.registerFactory<GlossaryService>(
       () => GlossaryService(g<WordRepository>()));
   g.registerFactory<LoginScreen>(

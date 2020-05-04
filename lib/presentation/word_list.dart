@@ -10,30 +10,35 @@ class WordListViewModel with ChangeNotifier {
   WordService _wordService;
   Words _words;
 
-  WordListViewModel(this._wordService) {
-    _words = _wordService.getAll();
-  }
+  WordListViewModel(this._wordService);
 
   bool _sort = false;
 
   int itemCount() {
-    return _words.getCount();
+    return _getWords().getCount();
   }
 
   String getTheWord(int index) {
-    return _words.get(index).getTheWord();
+    return _getWords().get(index).getTheWord();
   }
 
   String getPronunciation(int index) {
-    return _words.get(index).getPronunciation();
+    return _getWords().get(index).getPronunciation();
   }
 
   String getMeaning(int index) {
-    return _words.get(index).getMeaning();
+    return _getWords().get(index).getMeaning();
   }
 
   bool getSort() {
     return _sort;
+  }
+
+  Words _getWords() {
+    if(_words == null) {
+      _words = _wordService.getAll();
+    }
+    return _words;
   }
 }
 

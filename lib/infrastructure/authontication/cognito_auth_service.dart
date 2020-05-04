@@ -3,6 +3,7 @@ import 'package:glossaryapp/domain/generic_subdomain/interface/login_session.dar
 import 'package:glossaryapp/infrastructure/result/signup_result.dart';
 import 'package:glossaryapp/infrastructure/result/login_result.dart';
 import 'package:glossaryapp/infrastructure/result/result.dart';
+import 'package:glossaryapp/infrastructure/session/api_session.dart';
 import 'package:injectable/injectable.dart';
 import 'dart:async';
 
@@ -60,34 +61,31 @@ class CognitoResult extends AbstractResult implements Result {
 }
 
 class CognitoSignupResult extends CognitoResult implements SignupResult {
-  CognitoSession _session;
 
   CognitoSignupResult(code, description) : super(code ,description);
   CognitoSignupResult.Exception(exception) : super.Exception(exception);
-  CognitoSignupResult.Success(this._session) : super.Success();
+  CognitoSignupResult.Success() : super.Success();
 
   bool isUserNameExistsError() {
     return _code == "UsernameExistsException";
   }
-
-  CognitoSession getSession() {
-    return _session;
-  }
 }
 
 class CognitoLoginResult extends CognitoResult implements LoginResult {
-  CognitoSession _session;
+  CognitoApiSessionSupplier _sessionSupplier;
 
   CognitoLoginResult(code, description) : super(code ,description);
   CognitoLoginResult.Exception(exception) : super.Exception(exception);
-  CognitoLoginResult.Success(this._session) : super.Success();
+  CognitoLoginResult.Success(CognitoSession session) : super.Success() {
+    _sessionSupplier = CognitoApiSessionSupplier(session);
+  }
 
   bool isNotConfirmedError() {
     return _code == "UserNotConfirmedException";
   }
 
-  CognitoSession getSession() {
-    return _session;
+  ApiSessionSupplier getSessionSupplier() {
+    return _sessionSupplier;
   }
 }
 
@@ -118,7 +116,7 @@ class CognitoAuthService {
       return CognitoSignupResult.Exception(e);
     }
 
-    return CognitoSignupResult.Success(CognitoSession());
+    return CognitoSignupResult.Success();
   }
 
   Future<CognitoVerificationUserResult> verificationUser(String email, String code) async {
