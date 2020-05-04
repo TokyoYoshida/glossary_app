@@ -6,7 +6,6 @@ import 'package:glossaryapp/infrastructure/result/result.dart';
 import 'package:glossaryapp/infrastructure/session/api_session.dart';
 import 'package:injectable/injectable.dart';
 import 'dart:async';
-
 import 'package:glossaryapp/config/config.dart';
 
 class CognitoSession {
@@ -76,7 +75,7 @@ class CognitoLoginResult extends CognitoResult implements LoginResult {
 
   CognitoLoginResult(code, description) : super(code ,description);
   CognitoLoginResult.Exception(exception) : super.Exception(exception);
-  CognitoLoginResult.Success(CognitoSession session) : super.Success() {
+  CognitoLoginResult.Success(CognitoUserSession session) : super.Success() {
     _sessionSupplier = CognitoApiSessionSupplier(session);
   }
 
@@ -168,13 +167,14 @@ class CognitoAuthService {
     final authDetails = new AuthenticationDetails(
         username: name, password: password);
 
+    CognitoUserSession session;
     try {
-      CognitoUserSession session = await cognitoUser.authenticateUser(authDetails);
+      session = await cognitoUser.authenticateUser(authDetails);
     } catch (e) {
       return CognitoLoginResult.Exception(e);
     }
 
-    return CognitoLoginResult.Success(CognitoSession());
+    return CognitoLoginResult.Success(session);
   }
 }
 

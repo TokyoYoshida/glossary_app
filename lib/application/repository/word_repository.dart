@@ -18,10 +18,10 @@ class WordRepository {
     return _words[id];
   }
 
-  Words getAll() {
+  Future<Words> getAll() async {
     ApiSessionSupplier supplier = _sessionService.getApiSessionSupplier();
 
-    List<Word> result = _dataSourceService.getAll(supplier);
+    List<Word> result = await _dataSourceService.getAll(supplier);
 
     return Words(result);
   }

@@ -5,19 +5,12 @@ import 'package:glossaryapp/domain/core/model/words.dart';
 import 'package:injectable/injectable.dart';
 import 'package:provider/provider.dart';
 
+@lazySingleton
 @injectable
 class WordListViewModel with ChangeNotifier {
-  WordService _wordService;
-  Words _wordsCache;
+  Words _words;
 
-  Words get _words {
-    if(_wordsCache == null) {
-      _wordsCache = _wordService.getAll();
-    }
-    return _wordsCache;
-  }
-
-  WordListViewModel(this._wordService);
+  WordListViewModel(this._words);
 
   bool _sort = false;
 
@@ -44,15 +37,30 @@ class WordListViewModel with ChangeNotifier {
 
 @injectable
 class WordListScreen extends StatelessWidget {
+  WordService _wordService;
   WordListViewModel _vm;
 
-  WordListScreen(this._vm);
+  WordListScreen(this._wordService);
+
+  Future<WordListViewModel> buildViewModel() async {
+    Words words = await _wordService.getAll();
+    return WordListViewModel(words);
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        body: ChangeNotifierProvider(
-            create: (context) => _vm, child: WordList()));
+    return Scaffold(
+        body: FutureBuilder(
+          future: buildViewModel(),
+          builder: (BuildContext context, AsyncSnapshot<WordListViewModel> snapshot){
+            if(!snapshot.hasData){
+              return Text("データが存在しません");
+            }
+            return ChangeNotifierProvider(
+            create: (context) => snapshot.data, child: WordList());
+          }
+        ));
   }
 }
 

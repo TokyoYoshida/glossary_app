@@ -9,7 +9,7 @@ class WordService {
 
   WordService(this._repo);
 
-  Words getAll() {
+  Future<Words> getAll() {
     return _repo.getAll();
   }
 }

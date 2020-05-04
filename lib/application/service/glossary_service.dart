@@ -8,7 +8,7 @@ class GlossaryService {
 
   GlossaryService(this._wordRepo);
 
-  Words getAll() {
+  Future<Words> getAll() {
     return _wordRepo.getAll();
   }
 }

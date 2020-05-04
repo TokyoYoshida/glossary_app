@@ -1,8 +1,9 @@
+import 'package:amazon_cognito_identity_dart/cognito.dart';
 import 'package:glossaryapp/infrastructure/authontication/cognito_auth_service.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class CognitoApi {
-  void setSession(CognitoSession session);
+  void setSession(CognitoUserSession session);
 }
 
 abstract class ApiSessionSupplier {
@@ -10,7 +11,7 @@ abstract class ApiSessionSupplier {
 }
 
 class CognitoApiSessionSupplier implements ApiSessionSupplier {
-  CognitoSession _session;
+  CognitoUserSession _session;
 
   CognitoApiSessionSupplier(this._session);
 
