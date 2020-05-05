@@ -24,7 +24,7 @@ class CognitoWordDataSourceService implements CognitoApi {
     final userPool = new CognitoUserPool(awsUserPoolId, awsClientId);
 
     final credentials = new CognitoCredentials(
-        awsUserPoolId, userPool);
+        awsIdPoolId, userPool);
 
     await credentials.getAwsCredentials(this._session.getIdToken().getJwtToken());
 
@@ -35,27 +35,24 @@ class CognitoWordDataSourceService implements CognitoApi {
         credentials.accessKeyId, credentials.secretAccessKey, endpoint,
         serviceName: 'appsync',
         sessionToken: credentials.sessionToken,
-        region: 'ap-southeast-1');
+        region: awsResion);
 
-    final String query = '''query GetEvent {
-      getEvent(id: "3dcd52c3-1fd6-4e4d-8da6-946ef4a0c94d") {
-        id
-        name
-        comments(limit: 10) {
+    final String query = '''query list {
+        listWords {
           items {
-            content
-            createdAt
+            id
+            theWord
+            meaning
           }
         }
-      }
-    }''';
+      }''';
 
     final signedRequest = new SigV4Request(awsSigV4Client,
         method: 'POST', path: '/graphql',
         headers: new Map<String, String>.from(
             {'Content-Type': 'application/graphql; charset=utf-8'}),
         body: new Map<String, String>.from({
-          'operationName': 'GetEvent',
+          'operationName': 'list',
           'query': query}));
 
     http.Response response;
