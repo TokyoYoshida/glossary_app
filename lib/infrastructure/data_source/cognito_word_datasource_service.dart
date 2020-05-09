@@ -26,7 +26,11 @@ class CognitoWordDataSourceService implements CognitoApi {
     final credentials = new CognitoCredentials(
         awsIdPoolId, userPool);
 
+    try {
     await credentials.getAwsCredentials(this._session.getIdToken().getJwtToken());
+    } catch (e) {
+      print(e);
+    }
 
     const endpoint =
         awsAppSyncEndPointUrl;
