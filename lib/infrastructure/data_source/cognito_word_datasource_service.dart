@@ -8,6 +8,8 @@ import 'package:glossaryapp/infrastructure/session/api_session.dart';
 import 'package:injectable/injectable.dart';
 import 'package:glossaryapp/config/config.dart';
 import 'dart:async';
+import 'dart:convert';
+
 
 @singleton
 @injectable
@@ -41,29 +43,38 @@ class CognitoWordDataSourceService implements CognitoApi {
         sessionToken: credentials.sessionToken,
         region: awsResion);
 
-    final String query = '''query list {
-        listWords {
-          items {
-            id
-            theWord
-            meaning
-          }
-        }
-      }''';
+    final query = {
+      'operationName': 'GetTodo',
+      'query':
+      '''
+     query GetTodo {
+       getTodo(id: "5239d208-3279-4e6c-a505-c467a74b317c") {
+         id
+         name
+         description
+       }
+     }
+     '''
+    };
 
-    final signedRequest = new SigV4Request(awsSigV4Client,
-        method: 'POST', path: '/graphql',
-        headers: new Map<String, String>.from(
-            {'Content-Type': 'application/graphql; charset=utf-8'}),
-        body: new Map<String, String>.from({
-          'operationName': 'list',
-          'query': query}));
+//    final signedRequest = new SigV4Request(awsSigV4Client,
+//        method: 'POST', path: '/graphql',
+//        headers: new Map<String, String>.from(
+//            {'Content-Type': 'application/graphql; charset=utf-8'}),
+//        body: new Map<String, String>.from({
+//          'operationName': 'list',
+//          'query': query}));
 
     http.Response response;
     try {
       response = await http.post(
-          signedRequest.url,
-          headers: signedRequest.headers, body: signedRequest.body);
+        '$endpoint/graphql',
+        headers: {
+          'Authorization': _session.getAccessToken().getJwtToken(),
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(query),
+      );
     } catch (e) {
       print(e);
     }
